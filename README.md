@@ -17,5 +17,15 @@ gcc `pkg-config --cflags gtk+-3.0` -o threadville threadville.c `pkg-config --li
 ./threadville
 ```
 
+4. Posible subdivisión del proyecto:
+- Threadville
+- Transporte público
+- Reparaciones
+- Automóviles
+- Ambulancias
+- Velocidades
+- Intersecciones
+- Simulación & Interacción
+
 ## Developed by
 [Kevin Hernández](https://github.com/kevinah95), [Steven Solano](https://github.com/solanors20), [Elisa Argueta](https://github.com/elisa7143), and [Jose Pablo Araya](https://github.com/arayajosepablo)
