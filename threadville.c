@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
 
 	/* Connect signals */
 	gtk_builder_connect_signals(builder, NULL);
+	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
 	/* Destroy builder, since we don't need it anymore */
 	g_object_unref(G_OBJECT(builder));
