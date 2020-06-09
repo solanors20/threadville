@@ -60,6 +60,7 @@ dkms.conf
 
 # C Executables
 threadville
+target
 
 # Glade
 *.glade~

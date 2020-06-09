@@ -8,19 +8,29 @@
       <placeholder/>
     </child>
     <child>
-      <object class="GtkPaned" id="paned1">
+      <object class="GtkPaned" id="paned">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <child>
-          <object class="GtkGrid" id="grid2">
+          <object class="GtkGrid" id="grid">
             <property name="width_request">201</property>
             <property name="height_request">216</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkSpinButton" id="spinbutton1">
+              <object class="GtkComboBoxText" id="combo_car">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
+                <property name="active_id">red</property>
+                <items>
+                  <item id="red" translatable="yes">Rojo</item>
+                  <item id="blue" translatable="yes">Azul</item>
+                  <item id="green" translatable="yes">Verde</item>
+                  <item id="black" translatable="yes">Negro</item>
+                  <item id="white" translatable="yes">Blanco</item>
+                  <item id="yellow" translatable="yes">Amarillo</item>
+                  <item id="ambulance" translatable="yes">Ambulancia</item>
+                </items>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -29,20 +39,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkComboBoxText" id="comboboxtext1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">14</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="entry1">
+              <object class="GtkEntry" id="entry_car">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="placeholder_text" translatable="yes">i.e.: A1, F2</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -51,11 +51,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="b_crear_auto_2">
+              <object class="GtkButton" id="btn_create_car">
                 <property name="label" translatable="yes">Crear Automovil</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_btn_create_car_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -64,7 +65,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSeparator" id="separator4">
+              <object class="GtkSeparator">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_top">10</property>
@@ -74,48 +75,6 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">18</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSpinButton" id="spinbutton2">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="editable">False</property>
-                <property name="input_purpose">digits</property>
-                <property name="climb_rate">0.5</property>
-                <property name="digits">1</property>
-                <property name="numeric">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">19</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="entry2">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="progress_pulse_step">0.089999999999999997</property>
-                <property name="placeholder_text" translatable="yes">Destino, i.e.:A,1</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">20</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="b_crear_amb_2">
-                <property name="label" translatable="yes">Crear Ambulancia</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">21</property>
                 <property name="width">2</property>
               </packing>
             </child>
@@ -281,11 +240,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="bcrearauto">
+              <object class="GtkButton" id="btn_create_random_car">
                 <property name="label" translatable="yes">Crear Automovil Random</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_btn_create_random_car_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -294,7 +254,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSeparator" id="separator3">
+              <object class="GtkSeparator">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_top">10</property>
@@ -308,11 +268,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="bcrearamb">
+              <object class="GtkButton" id="btn_create_random_ambulance">
                 <property name="label" translatable="yes">Crear Ambulancia Random</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_btn_create_random_ambulance_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -321,12 +282,25 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSeparator" id="separator1">
+              <object class="GtkSeparator">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_top">10</property>
                 <property name="margin_bottom">10</property>
                 <property name="hexpand">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">14</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparator">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_top">10</property>
+                <property name="margin_bottom">10</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>

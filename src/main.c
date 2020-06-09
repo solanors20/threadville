@@ -16,9 +16,19 @@ typedef struct {
     GtkWidget *w_check_pink_bus;
     GtkWidget *w_check_light_blue_bus;
     GtkWidget *w_check_orange_bus;
+		//buttons
+		GtkWidget *w_btn_create_random_car;
+		GtkWidget *w_btn_create_random_ambulance;
+		GtkWidget *w_btn_create_car;
+		//combobox
+		GtkWidget *w_combo_car;
+		//entry
+		GtkWidget *w_entry_car;
+
 } AppWidgets;
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) 
+{
 	GtkBuilder *builder;
 	GtkWidget *window;
 	GError *error = NULL;
@@ -46,7 +56,7 @@ int main(int argc, char **argv) {
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
 
-  //buses
+  //checks
 	widgets->w_check_red_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_red_bus"));
 	widgets->w_check_green_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_green_bus"));
 	widgets->w_check_blue_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_blue_bus"));
@@ -56,6 +66,10 @@ int main(int argc, char **argv) {
 	widgets->w_check_pink_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_pink_bus"));
 	widgets->w_check_light_blue_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_light_blue_bus"));
 	widgets->w_check_orange_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_orange_bus"));
+	//combo
+	widgets->w_combo_car = GTK_WIDGET(gtk_builder_get_object(builder, "combo_car"));
+	//entry
+	widgets->w_entry_car = GTK_WIDGET(gtk_builder_get_object(builder, "entry_car"));
 
 
 	// widgets pointer will be passed to all widget handler functions as the user_data parameter
@@ -196,5 +210,26 @@ void on_check_orange_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widg
 		}
 }
 
+void on_btn_create_random_car_clicked(GtkButton *button, AppWidgets *widgets)
+{
+	g_print("Random car clicked\n");
+}
 
+void on_btn_create_random_ambulance_clicked(GtkButton *button, AppWidgets *widgets)
+{
+	g_print("Random ambulance clicked\n");
+}
 
+void on_btn_create_car_clicked(GtkButton *button, AppWidgets *widgets)
+{
+	g_print("Create car clicked\n");
+	const gchar *car_selected, *destinations;
+	
+	destinations = gtk_entry_get_text(GTK_ENTRY(widgets->w_entry_car));
+	car_selected = gtk_combo_box_get_active_id(GTK_COMBO_BOX(widgets->w_combo_car));
+	g_print("Car selected: %s\n", car_selected);
+	g_print("Destinations: %s\n", destinations);
+	
+	//clean entry text
+	gtk_entry_set_text(GTK_ENTRY(widgets->w_entry_car), "");
+}
