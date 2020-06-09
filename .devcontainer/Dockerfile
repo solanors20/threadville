@@ -11,7 +11,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:0-ubuntu-18.04
 #
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
-    && apt-get -y install --no-install-recommends build-essential libgtk-3-dev \
+    && apt-get -y install --no-install-recommends build-essential libgtk-3-dev glade \
     #
     # Clean up
     && apt-get autoremove -y \
