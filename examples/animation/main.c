@@ -4,7 +4,8 @@
  * This program shows high /usr/libexec/Xorg load while running full screen on Linux
  *
  * Compile with:
- *   gcc `pkg-config --cflags --libs gtk+-3.0` -lm -lpthread main.c
+ *   cc -c `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` main.c
+ *   cc main.o -o threadville -Wl,--export-dynamic `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` -lm -pthread
  */
 
 #include <gtk/gtk.h>
