@@ -1,6 +1,7 @@
 #include "raylib.h"
 
 #define SQUARE_GRID_SIZE 20
+#define BUS_SIZE 40
 
 typedef struct Bus
 {
@@ -26,30 +27,59 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Threadville");
 
-    SetTargetFPS(2); // Set our game to run at 60 frames-per-second
+    SetTargetFPS(5); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
-    offset.x = villeWidth % (SQUARE_GRID_SIZE*2);
-    offset.y = villeHeight % (SQUARE_GRID_SIZE*2);
+    offset.x = villeWidth % (SQUARE_GRID_SIZE);
+    offset.y = villeHeight % (SQUARE_GRID_SIZE);
+    TraceLog(LOG_INFO, "offset.x: %f", offset.x);
+    TraceLog(LOG_INFO, "offset.y: %f", offset.y);
 
-    bus.position = (Vector2){ 0, offset.y };
-    bus.size = (Vector2){ SQUARE_GRID_SIZE*2, SQUARE_GRID_SIZE };
-    bus.speed = (Vector2){ SQUARE_GRID_SIZE*2, 0 };
+    bus.position = (Vector2){ 0, 0 };
+    bus.size = (Vector2){ BUS_SIZE, SQUARE_GRID_SIZE };
+    bus.speed = (Vector2){ SQUARE_GRID_SIZE, 0 };
     bus.color = RED;
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
+        TraceLog(LOG_INFO, "bus.position.x: %f", bus.position.x);
+        TraceLog(LOG_INFO, "bus.position.y: %f", bus.position.y);
+        if(bus.position.x >= (villeWidth - (BUS_SIZE)) && (bus.speed.y == 0))
+        {
+            bus.speed = (Vector2){ 0, SQUARE_GRID_SIZE };
+            bus.size = (Vector2){ SQUARE_GRID_SIZE, BUS_SIZE };
+            bus.position.x += SQUARE_GRID_SIZE;
+            bus.position.y -= SQUARE_GRID_SIZE;
+        }
+
+        else if(bus.position.y >= (villeHeight - (BUS_SIZE)) && (bus.speed.x == 0))
+        {
+            bus.speed = (Vector2){  -1*SQUARE_GRID_SIZE, 0 };
+            bus.size = (Vector2){ BUS_SIZE, SQUARE_GRID_SIZE };
+            bus.position.x -= SQUARE_GRID_SIZE;
+            bus.position.y += SQUARE_GRID_SIZE;
+        }
+
+        else if((bus.position.x < 0) && (bus.speed.y == 0))
+        {
+            bus.speed = (Vector2){ 0, -SQUARE_GRID_SIZE };
+            bus.size = (Vector2){ SQUARE_GRID_SIZE, BUS_SIZE };
+            bus.position.x += SQUARE_GRID_SIZE;
+            bus.position.y -= SQUARE_GRID_SIZE;
+        }
+
+        else if((bus.position.y < 0) && (bus.speed.x == 0))
+        {
+            bus.speed = (Vector2){  SQUARE_GRID_SIZE, 0 };
+            bus.size = (Vector2){ BUS_SIZE, SQUARE_GRID_SIZE };
+            bus.position.x -= SQUARE_GRID_SIZE;
+            bus.position.y += SQUARE_GRID_SIZE;
+        }
+
         bus.position.x += bus.speed.x;
         bus.position.y += bus.speed.y;
-
-        if(bus.position.x >= (villeWidth - offset.x))
-        {
-            bus.speed = (Vector2){ 0, SQUARE_GRID_SIZE*2 };
-            bus.size = (Vector2){ SQUARE_GRID_SIZE, SQUARE_GRID_SIZE*2 };
-        }
-        
 
         // Draw
         //----------------------------------------------------------------------------------
@@ -61,16 +91,16 @@ int main(void)
         for (int i = 0; i < villeWidth / SQUARE_GRID_SIZE + 1; i++)
         {
             DrawLineV(
-                (Vector2){SQUARE_GRID_SIZE * i + offset.x / 2, offset.y / 2},
-                (Vector2){SQUARE_GRID_SIZE * i + offset.x / 2, villeHeight - offset.y / 2},
+                (Vector2){SQUARE_GRID_SIZE * i, 0},
+                (Vector2){SQUARE_GRID_SIZE * i, villeHeight},
                 LIGHTGRAY);
         }
 
         for (int i = 0; i < villeHeight / SQUARE_GRID_SIZE + 1; i++)
         {
             DrawLineV(
-                (Vector2){offset.x / 2, SQUARE_GRID_SIZE * i + offset.y / 2},
-                (Vector2){villeWidth - offset.x / 2, SQUARE_GRID_SIZE * i + offset.y / 2},
+                (Vector2){0, SQUARE_GRID_SIZE * i},
+                (Vector2){villeWidth, SQUARE_GRID_SIZE * i },
                 LIGHTGRAY);
         }
 
