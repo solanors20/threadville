@@ -1,4 +1,6 @@
 #include "raylib.h"
+#include "raymath.h"
+#include <time.h>
 
 #define SQUARE_GRID_SIZE 20
 #define BUS_SIZE 40
@@ -11,75 +13,71 @@ typedef struct Bus
     Color color;
 } Bus;
 
-
-static const int villeWidth = 400;
+static const int villeWidth = 960;
 static const int villeHeight = 200;
 static Bus bus = {0};
 
-static Vector2 offset = {0};
+Vector2 Vector2Multiply2(Vector2 v1, Vector2 v2)
+{
+    Vector2 result = {v1.x * v2.x, v1.y * v2.y};
+    return result;
+}
 
 int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
+    const int screenWidth = 1000;
     const int screenHeight = 400;
 
     InitWindow(screenWidth, screenHeight, "Threadville");
 
-    SetTargetFPS(5); // Set our game to run at 60 frames-per-second
+    SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
-    offset.x = villeWidth % (SQUARE_GRID_SIZE);
-    offset.y = villeHeight % (SQUARE_GRID_SIZE);
-    TraceLog(LOG_INFO, "offset.x: %f", offset.x);
-    TraceLog(LOG_INFO, "offset.y: %f", offset.y);
-
-    bus.position = (Vector2){ 0, 0 };
-    bus.size = (Vector2){ BUS_SIZE, SQUARE_GRID_SIZE };
-    bus.speed = (Vector2){ SQUARE_GRID_SIZE, 0 };
+    bus.position = (Vector2){0, 0};
+    bus.size = (Vector2){BUS_SIZE, SQUARE_GRID_SIZE};
+    bus.speed = (Vector2){SQUARE_GRID_SIZE, 0};
     bus.color = RED;
+
+    Vector2 target_right = {(villeWidth - (BUS_SIZE)), 0};
+    Vector2 target_down = {(villeWidth - (BUS_SIZE)), (villeHeight - (BUS_SIZE))};
+
+    Vector2 normalize = {0};
+
+    float acceleration = 48 / 5;
+
+    float velocity = 0;
+    int framesCounter = 0;
+    float deltaTime = 0;
+
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
-        TraceLog(LOG_INFO, "bus.position.x: %f", bus.position.x);
-        TraceLog(LOG_INFO, "bus.position.y: %f", bus.position.y);
-        if(bus.position.x >= (villeWidth - (BUS_SIZE)) && (bus.speed.y == 0))
-        {
-            bus.speed = (Vector2){ 0, SQUARE_GRID_SIZE };
-            bus.size = (Vector2){ SQUARE_GRID_SIZE, BUS_SIZE };
-            bus.position.x += SQUARE_GRID_SIZE;
-            bus.position.y -= SQUARE_GRID_SIZE;
-        }
+        //TraceLog(LOG_INFO, "bus.position.x: %f", bus.position.x);
+        //TraceLog(LOG_INFO, "bus.position.y: %f", bus.position.y);
+        framesCounter++;
 
-        else if(bus.position.y >= (villeHeight - (BUS_SIZE)) && (bus.speed.x == 0))
-        {
-            bus.speed = (Vector2){  -1*SQUARE_GRID_SIZE, 0 };
-            bus.size = (Vector2){ BUS_SIZE, SQUARE_GRID_SIZE };
-            bus.position.x -= SQUARE_GRID_SIZE;
-            bus.position.y += SQUARE_GRID_SIZE;
-        }
+        deltaTime = GetFrameTime();
 
-        else if((bus.position.x < 0) && (bus.speed.y == 0))
-        {
-            bus.speed = (Vector2){ 0, -SQUARE_GRID_SIZE };
-            bus.size = (Vector2){ SQUARE_GRID_SIZE, BUS_SIZE };
-            bus.position.x += SQUARE_GRID_SIZE;
-            bus.position.y -= SQUARE_GRID_SIZE;
-        }
+        Vector2 b_to_t = Vector2Subtract(target_right, bus.position);
 
-        else if((bus.position.y < 0) && (bus.speed.x == 0))
-        {
-            bus.speed = (Vector2){  SQUARE_GRID_SIZE, 0 };
-            bus.size = (Vector2){ BUS_SIZE, SQUARE_GRID_SIZE };
-            bus.position.x -= SQUARE_GRID_SIZE;
-            bus.position.y += SQUARE_GRID_SIZE;
-        }
+        normalize = Vector2Normalize(b_to_t);
 
-        bus.position.x += bus.speed.x;
-        bus.position.y += bus.speed.y;
+        TraceLog(LOG_INFO, "normalize");
+        TraceLog(LOG_INFO, "x=%f, y=%f", normalize.x, normalize.y);
+        TraceLog(LOG_INFO, "magnitude=%f", Vector2Length(normalize));
+
+        if (bus.position.x <= (villeWidth - (BUS_SIZE)))
+        {
+            TraceLog(LOG_INFO, "delta: %f", deltaTime);
+            bus.position.x += SQUARE_GRID_SIZE * deltaTime * acceleration * normalize.x;
+
+            Vector2 vr = Vector2Rotate(normalize, 270);
+            TraceLog(LOG_INFO, "\t vr.x: %f vr.y: %f\n", vr.x, vr.y);
+        }
 
         // Draw
         //----------------------------------------------------------------------------------
@@ -100,11 +98,13 @@ int main(void)
         {
             DrawLineV(
                 (Vector2){0, SQUARE_GRID_SIZE * i},
-                (Vector2){villeWidth, SQUARE_GRID_SIZE * i },
+                (Vector2){villeWidth, SQUARE_GRID_SIZE * i},
                 LIGHTGRAY);
         }
 
         DrawRectangleV(bus.position, bus.size, bus.color);
+
+        DrawText(FormatText("framesCounter/sec: %i", framesCounter / 60), 0, 300, 14, GREEN);
 
         EndDrawing();
         //------------------------------Congrats! You created your first window!----------------------------------------------------
