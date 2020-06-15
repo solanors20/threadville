@@ -24,10 +24,10 @@ int hiloBusGris=0;
 int hiloBusRosa=0;
 int hiloBusCeleste=0;
 
-#define WIDTH 1080
+#define WIDTH 1220
 #define HEIGTH 720
 
-#define WIDTH_DA 1080
+#define WIDTH_DA 1220
 #define HEIGTH_DA 720
 
 #define TILESIZE 20

@@ -27,11 +27,19 @@ typedef struct {
 
 } AppWidgets;
 
+static guint size =32;
+static gint64 last_tick = 0;
+
+gboolean on_tick(GtkWidget *drawing_area);
+
 int main(int argc, char **argv) 
 {
 	GtkBuilder *builder;
 	GtkWidget *window;
 	GError *error = NULL;
+	GtkWidget *drawing_area;
+	// the time between calls to the function, in milliseconds (1/1000ths of a second)
+	guint interval = 1000 / FPS / 2; 
 
 	AppWidgets *widgets = g_slice_new(AppWidgets);
 
@@ -56,6 +64,7 @@ int main(int argc, char **argv)
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
 
+	drawing_area = GTK_WIDGET(gtk_builder_get_object(builder, "draw"));
   //checks
 	widgets->w_check_red_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_red_bus"));
 	widgets->w_check_green_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_green_bus"));
@@ -81,6 +90,9 @@ int main(int argc, char **argv)
 
 	/* Show window. All other widgets are automatically shown by GtkBuilder */
 	gtk_widget_show(window);
+
+	
+	g_timeout_add(interval, (GSourceFunc) on_tick, drawing_area); 
 
 	/* Start main loop */
 	gtk_main();
@@ -232,4 +244,17 @@ void on_btn_create_car_clicked(GtkButton *button, AppWidgets *widgets)
 	
 	//clean entry text
 	gtk_entry_set_text(GTK_ENTRY(widgets->w_entry_car), "");
+}
+
+gboolean on_tick(GtkWidget *drawing_area) {
+    gint64 current = g_get_real_time ();
+    if ((current - last_tick) < (1000/ FPS)) {
+        last_tick = current;
+        return G_SOURCE_CONTINUE;
+    }
+
+    gtk_widget_queue_draw_area(drawing_area, 0, 0, WIDTH, HEIGTH);
+
+    last_tick = current;
+    return G_SOURCE_CONTINUE;
 }
