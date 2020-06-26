@@ -7,21 +7,21 @@
 
 typedef struct Threadville 
 {
-	NODE node;
+    NODE node;
 } THREADVILLE;
 
 THREADVILLE* createThreadville()
 {
-	THREADVILLE *threadville = malloc(sizeof(THREADVILLE));
-	return threadville;
+    THREADVILLE *threadville = malloc(sizeof(THREADVILLE));
+    return threadville;
 }
 
 void releaseThreadville(THREADVILLE *threadville)
 {
-	if(threadville)
-	{
-		free(threadville);
-	}
+    if(threadville)
+    {
+        free(threadville);
+    }
 }
 
 #endif
