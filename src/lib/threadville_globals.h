@@ -36,7 +36,7 @@ int hiloBusCeleste=0;
 #define COLUMNAS 48
 
 #define FILAS2 34
-#define COLUMNAS2 61
+#define COLUMNAS2 52
 
 #define P 168
 
