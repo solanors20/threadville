@@ -89,13 +89,12 @@ static void draw_background (cairo_t * cr) {
                 cairo_show_text(cr, paradas[p]);
                 p++;
             }else if(map2[x][y]==5 || map2[x][y]==6){ //paradas
-                //cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
                 cairo_set_source_rgb (cr, 0.5, 0.5, 0.5); //gris_de_calle -> rgb(0.17, 0.18, 0.18)
                 cairo_rectangle(cr,y*TILESIZE,x*TILESIZE,TILESIZE,TILESIZE);
                 cairo_fill (cr);
             }
-        } // for y
-    } // for x
+        } 
+    } 
 
     int x_limit, y_limit;
     x_limit = 6;
@@ -146,7 +145,7 @@ static void draw_background (cairo_t * cr) {
     }
  
      
-} // draw_background
+} 
 
 
 #endif
