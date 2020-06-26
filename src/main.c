@@ -253,11 +253,11 @@ void on_check_white_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widge
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("white_bus is Checked\n");
+		enable_white_bus();
 	}
 	else
 	{
-		g_print("white_bus is Unchecked\n");
+		disable_bus(busWhiteThreadCounter);
 	}
 }
 

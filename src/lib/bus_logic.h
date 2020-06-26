@@ -40,12 +40,21 @@ void enable_blue_bus()
   add_bus(name, totalStops, stops, 5, 2);
 }
 
+void enable_white_bus() {
+     int stops[6] = {65, 125, 171, 110, 50, 4};
+     int totalStops = 6;
+     char *name = "WHITE-BUS";
+     busWhiteThreadCounter = threadCounter;
+     add_bus(name, totalStops, stops, 4, 5);
+}
+
 
 void init_buses()
 {
   enable_red_bus();
   enable_green_bus();
   enable_blue_bus();
+  enable_white_bus();
 }
 
 #endif
