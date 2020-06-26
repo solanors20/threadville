@@ -10,23 +10,24 @@
 #include "graph.h"
 #include "vehicle.h"
 
-bool near_car(VEHICLE *car1, VEHICLE *car2) {       
-    int igual=memcmp(&car1, &car2, sizeof(car1));
-    if(igual==0)
-        return false;
-    
-    if(
-            (car1->x+(car1->width + 5)*fabs(car1->dx) >= car2->x && car1->x < car2->x && (car1->y == car2->y) && car1->dx==1) ||
-            (car1->x-(car1->width + 5)*fabs(car1->dx) < car2->x && car1->x > car2->x && (car1->y == car2->y) && car1->dx==-1) ||
-            ((car1->y+(car1->height + 5)*fabs(car1->dy) >= car2->y && car1->y < car2->y) && (car1->x == car2->x) && car1->dy==1) ||
-            ((car1->y-(car1->height + 5)*fabs(car1->dy) < car2->y && car1->y > car2->y) && (car1->x == car2->x) && car1->dy==-1)
-    ){
-        return true;
-    }
-    
+bool are_two_vehicles_near(VEHICLE *car1, VEHICLE *car2)
+{
+  int are_equal = memcmp(&car1, &car2, sizeof(car1));
+  if (are_equal == 0)
     return false;
 
-} // near_car
+  if (
+      (car1->x + (car1->width + 5) * fabs(car1->dx) >= car2->x && car1->x < car2->x && (car1->y == car2->y) && car1->dx == 1) ||
+      (car1->x - (car1->width + 5) * fabs(car1->dx) < car2->x && car1->x > car2->x && (car1->y == car2->y) && car1->dx == -1) ||
+      ((car1->y + (car1->height + 5) * fabs(car1->dy) >= car2->y && car1->y < car2->y) && (car1->x == car2->x) && car1->dy == 1) ||
+      ((car1->y - (car1->height + 5) * fabs(car1->dy) < car2->y && car1->y > car2->y) && (car1->x == car2->x) && car1->dy == -1))
+  {
+    return true;
+  }
+
+  return false;
+
+}
 
 void *update_car_position(void *car)
 {
@@ -34,12 +35,12 @@ void *update_car_position(void *car)
   int p = 0;
 
   generateRoute(tempCar, tempCar->stops[p], tempCar->stops[p + 1]);
-  //displayDestinations(tempCar->route->destinations);
-  DESTINATION *destinoActual = tempCar->route->destination;
-  destinoActual = destinoActual->next;
+
+  DESTINATION *currentDestination = tempCar->route->destination;
+  currentDestination = currentDestination->next;
   tempCar->nextDestination = tempCar->stops[p + 1]->name;
 
-  bool mover = true;
+  bool canMove = true;
   while (tempCar->run)
   {
 
@@ -47,29 +48,29 @@ void *update_car_position(void *car)
     {
       int i = 0;
 
-      if (tempCar->x < destinoActual->node.x && tempCar->y <= destinoActual->node.y)
+      if (tempCar->x < currentDestination->node.x && tempCar->y <= currentDestination->node.y)
       {
         tempCar->dx = 1;
         tempCar->dy = 0;
       }
-      else if (tempCar->y < destinoActual->node.y)
+      else if (tempCar->y < currentDestination->node.y)
       {
         tempCar->dx = 0;
         tempCar->dy = 1;
       }
-      else if (tempCar->x > destinoActual->node.x)
+      else if (tempCar->x > currentDestination->node.x)
       {
         tempCar->dx = -1;
         tempCar->dy = 0;
       }
-      else if (tempCar->y > destinoActual->node.y)
+      else if (tempCar->y > currentDestination->node.y)
       {
         tempCar->dx = 0;
         tempCar->dy = -1;
       }
       else
       {
-        if ((destinoActual = destinoActual->next) != NULL)
+        if ((currentDestination = currentDestination->next) != NULL)
         {
           ;
         }
@@ -79,8 +80,8 @@ void *update_car_position(void *car)
           if (p < tempCar->stopsCounter - 1)
           {
             generateRoute(tempCar, tempCar->stops[p % tempCar->stopsCounter], tempCar->stops[(p + 1) % tempCar->stopsCounter]);
-            destinoActual = tempCar->route->destination;
-            destinoActual = destinoActual->next;
+            currentDestination = tempCar->route->destination;
+            currentDestination = currentDestination->next;
 
             usleep(tempCar->delay * 1000000);
             tempCar->nextDestination = tempCar->stops[p + 1]->name;
@@ -99,8 +100,8 @@ void *update_car_position(void *car)
             else
             {
               generateRoute(tempCar, tempCar->stops[p], tempCar->stops[0]);
-              destinoActual = tempCar->route->destination;
-              destinoActual = destinoActual->next;
+              currentDestination = tempCar->route->destination;
+              currentDestination = currentDestination->next;
 
               usleep(tempCar->delay * 1000000);
               tempCar->nextDestination = tempCar->stops[0]->name;
@@ -113,19 +114,19 @@ void *update_car_position(void *car)
       for (i; i < contadorHilos; i++)
       {
 
-        if (!near_car(tempCar, vehicules[i]))
+        if (!are_two_vehicles_near(tempCar, vehicules[i]))
         {
-          mover = true;
+          canMove = true;
         }
         else
         {
-          mover = false;
+          canMove = false;
           break;
         }
       } // for
-      if (mover)
+      if (canMove)
       {
-        if (destinoActual->node.isSpecial && destinoActual->node.isFree == false)
+        if (currentDestination->node.isSpecial && currentDestination->node.isFree == false)
         {
         }
         else
@@ -155,11 +156,8 @@ void *update_car_position(void *car)
     }
 
     usleep(tempCar->speed * 10000);
-    //sleep(1);
-
-  } // while run
-
-} // update_car_position
+  }
+}
 
 void add_bus(char *id, int stopsCounter, int stops[], int speed, int color)
 {
@@ -173,7 +171,7 @@ void add_bus(char *id, int stopsCounter, int stops[], int speed, int color)
 
   for (int i = 0; i < stopsCounter; i++)
   {
-    vehicules[contadorHilos]->stops[i] =  &linkedList[stops[i]];
+    vehicules[contadorHilos]->stops[i] = &linkedList[stops[i]];
   }
 
   vehicules[contadorHilos]->x = linkedList[stops[0]].x;
@@ -187,7 +185,5 @@ void add_bus(char *id, int stopsCounter, int stops[], int speed, int color)
   }
   contadorHilos++;
 }
-
-
 
 #endif
