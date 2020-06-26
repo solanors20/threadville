@@ -1,3 +1,5 @@
+#ifndef MAP_H_
+#define MAP_H_
 
 char* paradas[P]={
     "1","2","1","2","1","2","1","2","1","2","1","2",
@@ -144,4 +146,4 @@ static void draw_background (cairo_t * cr) {
      
 } // draw_background
 
-
+#endif
