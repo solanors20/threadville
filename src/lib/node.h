@@ -9,13 +9,13 @@
 
 typedef struct NODE 
 {
-	int id;
+    int id;
     char *name;
-	int capacity;
-	bool isSpecial;
-	bool isFree;
-	int paths[VERTEXES];
-	int x;
+    int capacity;
+    bool isSpecial;
+    bool isFree;
+    int paths[VERTEXES];
+    int x;
     int y;
     struct NODE *nextNode1;
     struct NODE *nextNode2;
@@ -23,25 +23,25 @@ typedef struct NODE
 
 NODE* createNode(int id, char *name, int capacity)
 {
-	NODE *node = malloc(sizeof(NODE));
-	node->id = id;
-	node->name = strdup(name);
-	node->capacity = capacity;
-	node->isSpecial = false;
+    NODE *node = malloc(sizeof(NODE));
+    node->id = id;
+    node->name = strdup(name);
+    node->capacity = capacity;
+    node->isSpecial = false;
 
-	return (NODE *)node;
+    return (NODE *)node;
 }
 
 void releaseNode(NODE *node)
 {
-	if(node)
+    if(node)
     {
-		if(node->name)
+        if(node->name)
         {
             free(node->name);
         }
-	    free(node);
-	}
+        free(node);
+    }
 }
 
 void setNextNodesInList (int index, int* nextNodes, NODE* linkedList)
