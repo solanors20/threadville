@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	/* Init logic*/
 	initialize();
 
-	initBuses();
+	init_buses();
 
 	/* Create new GtkBuilder object */
 	builder = gtk_builder_new_from_file("glade/threadville.glade");
