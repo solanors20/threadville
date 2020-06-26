@@ -236,10 +236,12 @@ void on_check_green_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widge
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
 		g_print("green_bus is Checked\n");
+		enable_green_bus();
 	}
 	else
 	{
 		g_print("green_bus is Unchecked\n");
+		disable_green_bus();
 	}
 }
 
