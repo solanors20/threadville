@@ -8,26 +8,41 @@
 
 #define TV_ADT
 
-void* createLarrySemaphore( void *direction){
-	int *direct = (int *)direction;
-    int counter = 0;
-	while(1){
-	
-		//printf("Cambiando los semáforos en puente %s en %i segundos \n", 'a', random);
+void* semaphoreWithConstantTime(void *bridge_ptr){
+
+	BRIDGE *bridge = (BRIDGE *)bridge_ptr;
+	int random;
+
+	while(true){
 		sleep(5);
-		*direct = (*direct == 0) ? 1 : 0;
+		bridge->northLeftBridge->isFree = !bridge->northLeftBridge->isFree;
+        bridge->southRightBridge->isFree = !bridge->southRightBridge->isFree;
 	}
 }
 
-void create_semaphores(int *direction){
- 	int rc;
+
+void semaphoreThreadInit(BRIDGE *bridge){
+	bridge->northLeftBridge->isSpecial=true;
+	bridge->northLeftBridge->isFree = true;
+
+	bridge->southRightBridge->isSpecial = true;
+	bridge->southRightBridge->isFree = false;
+
+	int rc;
 	pthread_t northSemaphore_thread;
-	rc = pthread_create(&northSemaphore_thread, NULL, &createLarrySemaphore, direction);
+	rc = pthread_create(&northSemaphore_thread, NULL, &semaphoreWithConstantTime, bridge);
 	if (rc)
     {
-        //printf("error, return frim pthread creation\n");            
+            printf("error, return frim pthread creation\n");
+            exit(4);
     }
 }
+
+void create_semaphores(){
+ 	semaphoreThreadInit(curly);   
+    semaphoreThreadInit(shemp);  
+}
+
 
 void draw_semaphore_by_node(NODE *node, cairo_t *cr){
     if(node->isFree)
@@ -49,6 +64,9 @@ static void draw_semaphores(cairo_t *cr){
     draw_semaphore_by_node(shemp->southRightBridge, cr);
     draw_semaphore_by_node(moe->northLeftBridge, cr);
     draw_semaphore_by_node(moe->southRightBridge, cr);
+    /*cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
+    cairo_rectangle(cr, 340, 300, 30, 40);
+    cairo_fill (cr);*/
 }
 
 
