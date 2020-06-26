@@ -2,16 +2,6 @@
 
 #define TV_GLOBALS
 
-
-#define V 180
-
-#define N 180
-
-#define RN 3
-
-#define MP 5
-
-
 int threadCounter=0;
 
 int busOrangeThreadCounter=0;
@@ -30,11 +20,6 @@ int busLightBlueThreadCounter=0;
 #define WIDTH_DA 1080
 #define HEIGTH_DA 720
 
-#define TILESIZE 20
-
-#define P 168
-
 #define FPS 60
 
 #endif
-

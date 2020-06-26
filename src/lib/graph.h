@@ -356,25 +356,25 @@ void setGraphCoordinatesForGui()
     {
         for(int y = 0; y < COLUMNS; y++)
         {
-            if(map2[x][y] == 5)
+            if(map[x][y] == 5)
             {
                 linkedList[i].x = y * TILE_SIZE + 10;
                 linkedList[i].y = x * TILE_SIZE;
                 i++;
             } 
-            else if(map2[x][y] == 6)
+            else if(map[x][y] == 6)
             {
                 linkedList[i].x=y * TILE_SIZE;
                 linkedList[i].y=x * TILE_SIZE;
                 i++;
             }
-            else if(map2[x][y] == 8) 
+            else if(map[x][y] == 8) 
             {
                 linkedList[i].x = y * TILE_SIZE + 10;
                 linkedList[i].y = x * TILE_SIZE;
                 i++;
             }
-            else if(map2[x][y] == 9)
+            else if(map[x][y] == 9)
             {
                 linkedList[i].x = y * TILE_SIZE + 10;
                 linkedList[i].y = x * TILE_SIZE;

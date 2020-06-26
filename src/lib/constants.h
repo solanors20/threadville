@@ -8,5 +8,6 @@
 #define AMBULANCE 3
 #define ROWS 34
 #define COLUMNS 52
+#define S 168
 
 #endif

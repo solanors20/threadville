@@ -3,7 +3,8 @@
 
 #include "constants.h"
 
-char* paradas[P]={
+char* stops[S] =
+{
     "1","2","1","2","1","2","1","2","1","2","1","2",
     "8","3","8","3","8","3","8","3","8","3","8","3",
     "7","4","7","4","7","4","7","4","7","4","7","4",
@@ -20,8 +21,8 @@ char* paradas[P]={
     "6","5","6","5","6","5","6","5","6","5","6","5"
 };
 
-
-int map2[ROWS][COLUMNS]={
+int map[ROWS][COLUMNS] = 
+{
         {0,0,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,0,0},
         {0,0,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,0,0},
         {0,0,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,0,0},
@@ -56,41 +57,47 @@ int map2[ROWS][COLUMNS]={
         {0,0,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,0,0},
         {0,0,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,0,0},
         {0,0,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,0,0}, 
-  
 };
 
 
-static void draw_background (cairo_t * cr) {
-
-    int x, y, p=0;
-    for(x=0; x<ROWS;x++){
-        for(y=0; y<COLUMNS; y++){
-            if(map2[x][y]==1){ //calle
-                cairo_set_source_rgb (cr, 0.5, 0.5, 0.5); //gris_de_calle -> rgb(0.17, 0.18, 0.18)
-                cairo_rectangle(cr,y*TILESIZE,x*TILESIZE,TILESIZE,TILESIZE);
+static void draw_background (cairo_t * cr) 
+{
+    int s = 0;
+    for(int x=0; x<ROWS; x++)
+    {
+        for(int y=0; y<COLUMNS; y++)
+        {
+            if(map[x][y]==1)
+            {
+                cairo_set_source_rgb (cr, 0.5, 0.5, 0.5);
+                cairo_rectangle(cr, y*TILE_SIZE, x*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 cairo_fill (cr);
-            }else if(map2[x][y]==2){ //amarillo cuadra
-                cairo_set_source_rgb (cr, 1.0, 1.0, 0.0); // amarillo -> 1.0,0.99,0.33
-                cairo_rectangle(cr,y*TILESIZE,x*TILESIZE,TILESIZE,TILESIZE);
+            } else if(map[x][y]==2)
+            {
+                cairo_set_source_rgb (cr, 1.0, 1.0, 0.0);
+                cairo_rectangle(cr, y*TILE_SIZE, x*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 cairo_fill (cr);
-            }else if(map2[x][y]==3){ //verde en puentes
-                cairo_set_source_rgb (cr, 0.3,0.8,0.0); // verde s0.01,0.49,0.0
-                cairo_rectangle(cr,y*TILESIZE,x*TILESIZE,TILESIZE,TILESIZE);
+            } else if(map[x][y]==3)
+            {
+                cairo_set_source_rgb (cr, 0.3,0.8,0.0);
+                cairo_rectangle(cr, y*TILE_SIZE, x*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 cairo_fill (cr);
-            }else if(map2[x][y]==4){ //paradas letrero 
+            } else if(map[x][y]==4)
+            {
                 cairo_set_source_rgb (cr, 1.0, 1.0, 1.0); //
-                cairo_rectangle(cr,y*TILESIZE,x*TILESIZE,TILESIZE,TILESIZE);
+                cairo_rectangle(cr, y*TILE_SIZE, x*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 cairo_fill (cr);
                 
                 cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
                 cairo_set_font_size(cr, 13);
-                cairo_move_to(cr, y*TILESIZE+6,x*TILESIZE+15);
+                cairo_move_to(cr, y*TILE_SIZE+6,x*TILE_SIZE+15);
 
-                cairo_show_text(cr, paradas[p]);
-                p++;
-            }else if(map2[x][y]==5 || map2[x][y]==6){ //paradas
-                cairo_set_source_rgb (cr, 0.5, 0.5, 0.5); //gris_de_calle -> rgb(0.17, 0.18, 0.18)
-                cairo_rectangle(cr,y*TILESIZE,x*TILESIZE,TILESIZE,TILESIZE);
+                cairo_show_text(cr, stops[s]);
+                s++;
+            } else if(map[x][y]==5 || map[x][y]==6) 
+            {
+                cairo_set_source_rgb (cr, 0.5, 0.5, 0.5);
+                cairo_rectangle(cr, y*TILE_SIZE, x*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 cairo_fill (cr);
             }
         } 
@@ -103,8 +110,8 @@ static void draw_background (cairo_t * cr) {
     cairo_set_font_size(cr, 54);
     cairo_text_extents_t extents;
     char *utf8;
-    x=0;
-    y=0;
+    int x=0;
+    int y=0;
 
     char *letters_array[2][6] = {
         {"A", "B", "C", "D", "E", "F"},
@@ -122,7 +129,6 @@ static void draw_background (cairo_t * cr) {
             cairo_move_to(cr, x, y);
             cairo_show_text(cr, utf8);
         }
-        
     }
 
     char *letters_array2[2][6] = {
@@ -140,12 +146,8 @@ static void draw_background (cairo_t * cr) {
             x = ((j * 160) + 120) - (extents.width/2 + extents.x_bearing);
             cairo_move_to(cr, x, y);
             cairo_show_text(cr, utf8);
-        }
-        
-    }
- 
-     
+        }   
+    }     
 } 
-
 
 #endif
