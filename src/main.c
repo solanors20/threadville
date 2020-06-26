@@ -5,7 +5,7 @@
 #include "lib/threadville_globals.h"
 #include "lib/map.h"
 #include "lib/initialize.h"
-#include "lib/vehicle_position_logic.h"
+#include "lib/bus_logic.h"
 
 
 
@@ -39,21 +39,7 @@ static GtkWidget *draw;
 
 static gboolean on_tick (gpointer user_data);
 
-//----------------------------------BUS ROJO
-void init_busRojo() {
-    int paradas[12] = {0, 6, 11, 71, 86, 119, 179, 173, 168, 108, 92, 60};
-    int cantidadParadas = 12;
-    char *name = "BUS-ROJO";
-    hiloBusRojo = contadorHilos;
-    add_bus(name, cantidadParadas, paradas, 5, 1);
 
-    //Periferica Grande - Roja> A1, D1, F2, L4, Z (dandole la vuelta), R2, X5, U5, S6, M1, Y (dandole la vuelta)
-}
-
-void initBuses()
-{
-	init_busRojo();
-}
 
 int main(int argc, char **argv) 
 {
