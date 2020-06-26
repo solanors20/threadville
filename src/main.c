@@ -1,85 +1,129 @@
-
-#include <string.h>
-#include <limits.h>
-#include <cairo.h>
 #include <gtk/gtk.h>
-#include <pthread.h>
-#include <stdio.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <assert.h>
+#include <unistd.h>
+
 #include "lib/threadville_globals.h"
 #include "lib/map.h"
-#include "lib/threadville_globals.h"
 
+typedef struct {
+	  //checks
+    GtkWidget *w_check_red_bus;
+    GtkWidget *w_check_green_bus;
+    GtkWidget *w_check_blue_bus;
+    GtkWidget *w_check_white_bus;
+    GtkWidget *w_check_gray_bus;
+    GtkWidget *w_check_black_bus;
+    GtkWidget *w_check_pink_bus;
+    GtkWidget *w_check_light_blue_bus;
+    GtkWidget *w_check_orange_bus;
+		//buttons
+		GtkWidget *w_btn_create_random_car;
+		GtkWidget *w_btn_create_random_ambulance;
+		GtkWidget *w_btn_create_car;
+		//combobox
+		GtkWidget *w_combo_car;
+		//entry
+		GtkWidget *w_entry_car;
 
+} AppWidgets;
 
-GtkWidget *window;
-GtkWidget *button;
-GtkWidget *buttonContar;
-GtkWidget *button2;
-
-//Buses
-GtkWidget *labelBuses;
-
-GtkWidget *buttonBusNaranja;
-GtkWidget *buttonBusNaranjaOff;
-
-GtkWidget *buttonBusRojo;
-GtkWidget *buttonBusRojoOff;
-
-GtkWidget *buttonBusVerde;
-GtkWidget *buttonBusVerdeOff;
-
-GtkWidget *buttonBusAzul;
-GtkWidget *buttonBusAzulOff;
-
-GtkWidget *buttonBusBlanco;
-GtkWidget *buttonBusBlancoOff;
-
-GtkWidget *buttonBusNegro;
-GtkWidget *buttonBusNegroOff;
-
-GtkWidget *buttonBusGris;
-GtkWidget *buttonBusGrisOff;
-
-GtkWidget *buttonBusRosa;
-GtkWidget *buttonBusRosaOff;
-
-GtkWidget *buttonBusCeleste;
-GtkWidget *buttonBusCelesteOff;
-
-GtkWidget *button_box;
-GtkWidget *fixed;   
-
-//Carros
-GtkWidget *labelCarroAleatorio;
-GtkWidget *labelCarroParams;
-GtkWidget *labelSample;
-GtkWidget *colorSelection;
-GList *colorList = NULL;
-
-GtkWidget *buttonCarroAleatorio;
-GtkWidget *buttonCarroParams;
-
-GtkWidget *inputDestinos;
-    
 static gint64 last_tick = 0;
 static guint tick_cb = 0;
 static guint size =32;
 
-static GtkWidget *drawing;
+static GtkWidget *draw;
+
+static gboolean on_tick (gpointer user_data);
+int direction = 0;
 
 
-static void on_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data) {
-    
-    draw_background(cr);
-    
-   
-} // on_draw
+void* semaphoresBridgeControlWait(){
 
+	int random;
+
+	while(1){
+		random = rand()%40;
+		//printf("Cambiando los semáforos en puente %s en %i segundos \n", 'a', random);
+		sleep(5);
+		direction = (direction == 0) ? 1 : 0;
+	}
+}
+
+int main(int argc, char **argv) 
+{
+	GtkBuilder *builder;
+	GtkWidget *window;
+	GError *error = NULL;
+
+	AppWidgets *widgets = g_slice_new(AppWidgets);
+
+	/* Init GTK+ */
+	gtk_init(&argc, &argv);
+
+	/* Create new GtkBuilder object */
+	builder = gtk_builder_new_from_file("glade/threadville.glade");
+	/* Load UI from file. If error occurs, report it and quit application.
+	 * Replace "tut.glade" with your saved project. */
+	if (!builder) {
+		g_warning("%s", error->message);
+		g_free(error);
+		return (1);
+	}
+
+	/* Get main window pointer from UI */
+	window = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
+
+
+	/* Connect signals */
+	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+
+	// draw
+	draw = GTK_WIDGET(gtk_builder_get_object(builder, "draw"));
+
+
+  //checks
+	widgets->w_check_red_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_red_bus"));
+	widgets->w_check_green_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_green_bus"));
+	widgets->w_check_blue_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_blue_bus"));
+	widgets->w_check_white_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_white_bus"));
+	widgets->w_check_gray_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_gray_bus"));
+	widgets->w_check_black_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_black_bus"));
+	widgets->w_check_pink_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_pink_bus"));
+	widgets->w_check_light_blue_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_light_blue_bus"));
+	widgets->w_check_orange_bus = GTK_WIDGET(gtk_builder_get_object(builder, "check_orange_bus"));
+	//combo
+	widgets->w_combo_car = GTK_WIDGET(gtk_builder_get_object(builder, "combo_car"));
+	//entry
+	widgets->w_entry_car = GTK_WIDGET(gtk_builder_get_object(builder, "entry_car"));
+
+
+	// widgets pointer will be passed to all widget handler functions as the user_data parameter
+  gtk_builder_connect_signals(builder, widgets);    // note: second parameter is not NULL
+
+
+	/* Destroy builder, since we don't need it anymore */
+	g_object_unref(G_OBJECT(builder));
+
+	/* Show window. All other widgets are automatically shown by GtkBuilder */
+	gtk_widget_show(window);
+
+	int rc;
+	pthread_t northSemaphore_thread;
+	rc = pthread_create(&northSemaphore_thread, NULL, &semaphoresBridgeControlWait, NULL);
+	if (rc)
+    {
+            printf("error, return frim pthread creation\n");
+            exit(4);
+    }
+	tick_cb = g_timeout_add(1000 / FPS / 2, (GSourceFunc) on_tick, GINT_TO_POINTER(size)); 
+
+	/* Start main loop */
+	gtk_main();
+
+	g_slice_free(AppWidgets, widgets);
+
+	return (0);
+}
 
 static gboolean on_tick (gpointer user_data) {
     gint64 current = g_get_real_time ();
@@ -89,111 +133,160 @@ static gboolean on_tick (gpointer user_data) {
         return G_SOURCE_CONTINUE;
     }
 
-    gtk_widget_queue_draw_area(drawing, 0, 0, WIDTH, HEIGTH);
+    gtk_widget_queue_draw_area(draw, 0, 0, WIDTH, HEIGTH);
 
     last_tick = current;
     return G_SOURCE_CONTINUE;
 }
 
-
-static void validate_data(GtkWidget *widget, gpointer data){
-    const gchar *destinos;
-    int length;
-    int active;
-    destinos = gtk_entry_get_text(GTK_ENTRY(inputDestinos));
-    length = gtk_entry_get_text_length(GTK_ENTRY(inputDestinos));
-    active = gtk_combo_box_get_active(GTK_COMBO_BOX(colorSelection));
-
-    if(length > 0 && active > 0){
-    	gtk_widget_set_sensitive(buttonCarroParams, true);
-    }else{
-	gtk_widget_set_sensitive(buttonCarroParams, false);
-    }
-}
-
-char** str_split(char* a_str, const char a_delim)
-{
-    char** result    = 0;
-    size_t count     = 0;
-    char* tmp        = a_str;
-    char* last_comma = 0;
-    char delim[2];
-    delim[0] = a_delim;
-    delim[1] = 0;
-
-    while (*tmp)
-    {
-        if (a_delim == *tmp)
-        {
-            count++;
-            last_comma = tmp;
-        }
-        tmp++;
-    }
-
-    count += last_comma < (a_str + strlen(a_str) - 1);
-    count++;
-
-    result = malloc(sizeof(char*) * count);
-
-    if (result)
-    {
-        size_t idx  = 0;
-        char* token = strtok(a_str, delim);
-
-        while (token)
-        {
-            assert(idx < count);
-            *(result + idx++) = strdup(token);
-            token = strtok(0, delim);
-        }
-        assert(idx == count - 1);
-        *(result + idx) = 0;
-    }
-
-    return result;
-}
-
-
-
-
-
-//******************************************************************************
-// ******************* MAIN ****************************************************
-//*****************************************************************************
-
-int main(int argc, char *argv[]) {
-
-	
-    gtk_init(&argc, &argv);
-    GError * error = NULL;
-
-    if (error) {
-        printf("%s\n", error->message);
-    }
-
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size(GTK_WINDOW(window), WIDTH, HEIGTH);
-    gtk_window_set_title(GTK_WINDOW(window), "SOA");
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-
-
-    fixed = gtk_fixed_new();
-    gtk_container_add(GTK_CONTAINER(window), fixed);
-    
-    drawing = gtk_drawing_area_new();
-    gtk_fixed_put(GTK_FIXED(fixed), drawing, 0, 0);
-    gtk_widget_set_size_request(drawing, WIDTH_DA, HEIGTH_DA); 
-    g_signal_connect(drawing, "draw", G_CALLBACK(on_draw), NULL);
-    
-    gtk_widget_show_all(window);
-    
-    tick_cb = g_timeout_add(1000 / FPS / 2, (GSourceFunc) on_tick, GINT_TO_POINTER(size)); 
+void on_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data) {
+	draw_background(cr);
+	if(direction)
+        cairo_set_source_rgb (cr, 0.0, 1.0, 0.0);
+    else
+        cairo_set_source_rgb (cr, 1.0, 0.0, 0.0);
         
-    //initSemaphoreBridges();
 
-    gtk_main();
+    cairo_rectangle(cr, 10, 5,TILESIZE,TILESIZE);
+    cairo_fill (cr);
+}
 
-    
-    return 0;
-} 
+void on_btn_select_all_buses_clicked(GtkButton *button, AppWidgets *widgets)
+{
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_red_bus), TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_green_bus), TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_blue_bus), TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_white_bus), TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_gray_bus), TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_black_bus), TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_pink_bus), TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_light_blue_bus), TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_orange_bus), TRUE);	
+}
+
+void on_btn_select_none_buses_clicked(GtkButton *button, AppWidgets *widgets)
+{
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_red_bus), FALSE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_green_bus), FALSE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_blue_bus), FALSE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_white_bus), FALSE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_gray_bus), FALSE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_black_bus), FALSE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_pink_bus), FALSE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_light_blue_bus), FALSE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgets->w_check_orange_bus), FALSE);	
+}
+
+void on_check_red_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widgets)
+{
+	if (gtk_toggle_button_get_active(togglebutton)) {
+			g_print("red_bus is Checked\n");
+		}
+		else {
+			g_print("red_bus is Unchecked\n");
+		}
+}
+
+void on_check_green_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widgets)
+{
+	if (gtk_toggle_button_get_active(togglebutton)) {
+			g_print("green_bus is Checked\n");
+		}
+		else {
+			g_print("green_bus is Unchecked\n");
+		}
+}
+
+void on_check_blue_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widgets)
+{
+	if (gtk_toggle_button_get_active(togglebutton)) {
+			g_print("blue_bus is Checked\n");
+		}
+		else {
+			g_print("blue_bus is Unchecked\n");
+		}
+}
+
+void on_check_white_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widgets)
+{
+	if (gtk_toggle_button_get_active(togglebutton)) {
+			g_print("white_bus is Checked\n");
+		}
+		else {
+			g_print("white_bus is Unchecked\n");
+		}
+}
+
+void on_check_gray_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widgets)
+{
+	if (gtk_toggle_button_get_active(togglebutton)) {
+			g_print("gray_bus is Checked\n");
+		}
+		else {
+			g_print("gray_bus is Unchecked\n");
+		}
+}
+
+void on_check_black_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widgets)
+{
+	if (gtk_toggle_button_get_active(togglebutton)) {
+			g_print("black_bus is Checked\n");
+		}
+		else {
+			g_print("black_bus is Unchecked\n");
+		}
+}
+
+void on_check_pink_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widgets)
+{
+	if (gtk_toggle_button_get_active(togglebutton)) {
+			g_print("pink_bus is Checked\n");
+		}
+		else {
+			g_print("pink_bus is Unchecked\n");
+		}
+}
+
+void on_check_light_blue_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widgets)
+{
+	if (gtk_toggle_button_get_active(togglebutton)) {
+			g_print("light_blue_bus is Checked\n");
+		}
+		else {
+			g_print("light_blue_bus is Unchecked\n");
+		}
+}
+
+void on_check_orange_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widgets)
+{
+	if (gtk_toggle_button_get_active(togglebutton)) {
+			g_print("orange_bus is Checked\n");
+		}
+		else {
+			g_print("orange_bus is Unchecked\n");
+		}
+}
+
+void on_btn_create_random_car_clicked(GtkButton *button, AppWidgets *widgets)
+{
+	g_print("Random car clicked\n");
+}
+
+void on_btn_create_random_ambulance_clicked(GtkButton *button, AppWidgets *widgets)
+{
+	g_print("Random ambulance clicked\n");
+}
+
+void on_btn_create_car_clicked(GtkButton *button, AppWidgets *widgets)
+{
+	g_print("Create car clicked\n");
+	const gchar *car_selected, *destinations;
+	
+	destinations = gtk_entry_get_text(GTK_ENTRY(widgets->w_entry_car));
+	car_selected = gtk_combo_box_get_active_id(GTK_COMBO_BOX(widgets->w_combo_car));
+	g_print("Car selected: %s\n", car_selected);
+	g_print("Destinations: %s\n", destinations);
+	
+	//clean entry text
+	gtk_entry_set_text(GTK_ENTRY(widgets->w_entry_car), "");
+}
