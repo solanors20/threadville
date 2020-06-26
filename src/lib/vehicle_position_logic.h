@@ -29,6 +29,22 @@ bool are_two_vehicles_near(VEHICLE *car1, VEHICLE *car2)
 
 }
 
+bool is_vehicle_in_red_light(VEHICLE *car1, NODE *semaphore)
+{
+
+  if (
+      (car1->x + (car1->width + 5) * fabs(car1->dx) >= semaphore->x && car1->x < semaphore->x && (car1->y == semaphore->y) && car1->dx == 1) ||
+      (car1->x - (car1->width + 5) * fabs(car1->dx) < semaphore->x && car1->x > semaphore->x && (car1->y == semaphore->y) && car1->dx == -1) ||
+      ((car1->y + (car1->height + 5) * fabs(car1->dy) >= semaphore->y && car1->y < semaphore->y) && (car1->x == semaphore->x) && car1->dy == 1) ||
+      ((car1->y - (car1->height + 5) * fabs(car1->dy) < semaphore->y && car1->y > semaphore->y) && (car1->x == semaphore->x) && car1->dy == -1))
+  {
+    return true;
+  }
+
+  return false;
+
+}
+
 void *update_car_position(void *car)
 {
   VEHICLE *tempCar = (VEHICLE *)car;
@@ -47,8 +63,13 @@ void *update_car_position(void *car)
     if (stopIndex < tempCar->stopsCounter - 1)
     {
       int i = 0;
-
-      if (tempCar->x < currentDestination->node.x && tempCar->y <= currentDestination->node.y)
+      if(!curly->northLeftBridge->isFree
+      && tempCar->x < 390
+      && tempCar->y == 300  ){
+        tempCar->dx = 0;
+        tempCar->dy = 0;
+      } 
+      else if (tempCar->x < currentDestination->node.x && tempCar->y <= currentDestination->node.y)
       {
         tempCar->dx = 1;
         tempCar->dy = 0;
@@ -124,10 +145,14 @@ void *update_car_position(void *car)
           break;
         }
       } 
+      
+      
+      
       if (canMove)
       {
         if (currentDestination->node.isSpecial && currentDestination->node.isFree == false)
         {
+         
         }
         else
         {

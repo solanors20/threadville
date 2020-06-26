@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 	/* Show window. All other widgets are automatically shown by GtkBuilder */
 	gtk_widget_show(window);
 
-	create_semaphores(&direction);
+	create_semaphores();
 	tick_cb = g_timeout_add(1000 / FPS / 2, (GSourceFunc)on_tick, GINT_TO_POINTER(size));
 
 	/* Start main loop */
