@@ -5,6 +5,11 @@
 #include "vehicle.h"
 
 
+#define NUM_VEHICLE 100
+
+VEHICLE* vehicules[NUM_VEHICLE];
+pthread_t threads[NUM_VEHICLE];
+
 void initialize()
 {
     initLinkedList();

@@ -29,6 +29,8 @@ typedef struct VEHICLE
     struct NODE **stops;
 } VEHICLE;
 
+
+
 VEHICLE* createCar(char *id, int carSpeed)
 {
     VEHICLE *car = malloc(sizeof(VEHICLE));
