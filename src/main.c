@@ -5,6 +5,8 @@
 #include "lib/map.h"
 #include "lib/semaphore.h"
 #include "lib/initialize.h"
+#include "lib/bus_logic.h"
+
 
 typedef struct {
 	  //checks
@@ -39,6 +41,7 @@ static gboolean on_tick (gpointer user_data);
 int direction = 0;
 
 
+
 int main(int argc, char **argv) 
 {
 	GtkBuilder *builder;
@@ -52,6 +55,8 @@ int main(int argc, char **argv)
 
 	/* Init logic*/
 	initialize();
+
+	initBuses();
 
 	/* Create new GtkBuilder object */
 	builder = gtk_builder_new_from_file("glade/threadville.glade");
@@ -126,9 +131,61 @@ static gboolean on_tick (gpointer user_data) {
     return G_SOURCE_CONTINUE;
 }
 
+static void draw_car(cairo_t * cr, VEHICLE * vehicule) {   
+    if(vehicule->run){
+        if(vehicule->color==1)
+            cairo_set_source_rgb (cr, 1.0, 0.0, 0.0);
+        else if(vehicule->color==2)
+            cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
+        else if(vehicule->color==3)
+            cairo_set_source_rgb (cr, 0.0, 1.0, 0.0);
+        else if(vehicule->color==4)
+            cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
+        else if(vehicule->color==5)
+            cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+        else if(vehicule->color==6)
+            cairo_set_source_rgb (cr, 1.0, 1.0, 0.0);
+        else if(vehicule->color==7)
+            cairo_set_source_rgb (cr, 1.0, 0.5, 0.0);
+        else if(vehicule->color==8)
+            cairo_set_source_rgb (cr, 0.7, 0.7, 0.7);
+        else if(vehicule->color==9)
+            cairo_set_source_rgb (cr, 1.0, 0.4, 0.45);
+        else if(vehicule->color==10)
+            cairo_set_source_rgb (cr, 0.75, 0.9, 0.92);
+
+        if(vehicule->type==1){
+        	cairo_arc(cr, vehicule->x, vehicule->y+10, TILESIZE/2, 0, 2*3.14);
+        	cairo_fill (cr);
+	}else{
+		cairo_rectangle(cr, vehicule->x-10, vehicule->y,TILESIZE+TILESIZE*fabs(vehicule->dx),TILESIZE+TILESIZE*fabs(vehicule->dy));
+                cairo_fill (cr);
+	}
+        
+        if(vehicule->color!=4)
+            cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
+        else
+            cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+	
+        cairo_move_to(cr, vehicule->x-8, vehicule->y+12);
+        cairo_set_font_size(cr, 12);
+        cairo_show_text(cr, vehicule -> nextDestination);
+        
+    }
+    
+} // draw_car
+
 void on_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data) {
 	draw_background(cr);
+
 	draw_LarrySemaphore(direction, cr);
+
+
+	int i;
+	for(i=0; i<contadorHilos; i++){
+			draw_car(cr, vehicules[i]);
+	} // for 
+
 }
 
 void on_btn_select_all_buses_clicked(GtkButton *button, AppWidgets *widgets)

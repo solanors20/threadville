@@ -146,4 +146,5 @@ static void draw_background (cairo_t * cr) {
      
 } // draw_background
 
+
 #endif
