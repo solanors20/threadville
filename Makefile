@@ -17,7 +17,7 @@ build:
 	mv *.o src/ 
 
 $(EXECUTABLE): $(ODIR) build
-	$(CC) $(OBJECTS) -o $(ODIR)/$(EXECUTABLE) -Wl,--export-dynamic `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` -pthread
+	$(CC) $(OBJECTS) -o $(ODIR)/$(EXECUTABLE) `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` -pthread
 
 $(ODIR):
 	mkdir target/

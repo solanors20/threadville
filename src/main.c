@@ -31,6 +31,9 @@ static gint64 last_tick = 0;
 static guint tick_cb = 0;
 static guint size =32;
 
+static GtkWidget *draw;
+
+static gboolean on_tick (gpointer user_data);
 
 
 int main(int argc, char **argv) 
@@ -60,6 +63,9 @@ int main(int argc, char **argv)
 
 	/* Connect signals */
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+
+	// draw
+	draw = GTK_WIDGET(gtk_builder_get_object(builder, "draw"));
 
 
   //checks
@@ -98,7 +104,7 @@ int main(int argc, char **argv)
 	return (0);
 }
 
-gboolean on_tick (gpointer user_data) {
+static gboolean on_tick (gpointer user_data) {
     gint64 current = g_get_real_time ();
     gboolean changed = FALSE;
     if ((current - last_tick) < (1000/ FPS)) {
@@ -106,7 +112,7 @@ gboolean on_tick (gpointer user_data) {
         return G_SOURCE_CONTINUE;
     }
 
-    gtk_widget_queue_draw_area(drawing, 0, 0, WIDTH, HEIGTH);
+    gtk_widget_queue_draw_area(draw, 0, 0, WIDTH, HEIGTH);
 
     last_tick = current;
     return G_SOURCE_CONTINUE;
