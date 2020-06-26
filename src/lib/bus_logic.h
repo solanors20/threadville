@@ -10,40 +10,42 @@ void disable_bus(int bus_index)
   vehicules[bus_index]->y = 0;
 }
 
-
-void enable_red_bus() {
-    int stops[12] = {0, 6, 11, 71, 86, 119, 179, 173, 168, 108, 92, 60};
-    int stopsCounter = 12;
-    char *name = "RED-BUS";
-    busRedThreadCounter = threadCounter;
-    add_bus(name, stopsCounter, stops, 5, 1);
-}
-
-void disable_red_bus()
+void enable_red_bus()
 {
-  disable_bus(busRedThreadCounter);
+  int stops[12] = {0, 6, 11, 71, 86, 119, 179, 173, 168, 108, 92, 60};
+  int stopsCounter = 12;
+  char *name = "RED-BUS";
+  busRedThreadCounter = threadCounter;
+  add_bus(name, stopsCounter, stops, 5, 1);
 }
 
 
-void enable_green_bus() {
-    int stops[6] = {9, 59, 87, 92, 48, 2};
-    int totalStops = 6;
-    char *name = "GREEN-BUS";
-    busGreenThreadCounter = threadCounter;
-    add_bus(name, totalStops, stops, 5, 3);
-}
 
-void disable_green_bus()
+void enable_green_bus()
 {
-  disable_bus(busGreenThreadCounter);
+  int stops[6] = {9, 59, 87, 92, 48, 2};
+  int totalStops = 6;
+  char *name = "GREEN-BUS";
+  busGreenThreadCounter = threadCounter;
+  add_bus(name, totalStops, stops, 5, 3);
 }
+
+
+void enable_blue_bus()
+{
+  int stops[6] = {131, 177, 170, 120, 93, 89};
+  int totalStops = 6;
+  char *name = "BLUE-BUS";
+  busBlueThreadCounter = threadCounter;
+  add_bus(name, totalStops, stops, 5, 2);
+}
+
 
 void init_buses()
 {
-	enable_red_bus();
+  enable_red_bus();
   enable_green_bus();
+  enable_blue_bus();
 }
-
-
 
 #endif

@@ -40,9 +40,7 @@ static gboolean on_tick(gpointer user_data);
 
 int direction = 0;
 
-
-
-int main(int argc, char **argv) 
+int main(int argc, char **argv)
 {
 	GtkBuilder *builder;
 	GtkWidget *window;
@@ -103,8 +101,7 @@ int main(int argc, char **argv)
 	gtk_widget_show(window);
 
 	create_semaphores(&direction);
-	tick_cb = g_timeout_add(1000 / FPS / 2, (GSourceFunc) on_tick, GINT_TO_POINTER(size)); 
-	
+	tick_cb = g_timeout_add(1000 / FPS / 2, (GSourceFunc)on_tick, GINT_TO_POINTER(size));
 
 	/* Start main loop */
 	gtk_main();
@@ -183,7 +180,6 @@ void on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 
 	draw_LarrySemaphore(direction, cr);
 
-
 	int i;
 	for (i = 0; i < threadCounter; i++)
 	{
@@ -221,13 +217,11 @@ void on_check_red_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widgets
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("red_bus is Checked\n");
 		enable_red_bus();
 	}
 	else
 	{
-		g_print("red_bus is Unchecked\n");
-		disable_red_bus();
+		disable_bus(busRedThreadCounter);
 	}
 }
 
@@ -235,13 +229,11 @@ void on_check_green_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widge
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("green_bus is Checked\n");
 		enable_green_bus();
 	}
 	else
 	{
-		g_print("green_bus is Unchecked\n");
-		disable_green_bus();
+		disable_bus(busGreenThreadCounter);
 	}
 }
 
@@ -249,11 +241,11 @@ void on_check_blue_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widget
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("blue_bus is Checked\n");
+		enable_blue_bus();
 	}
 	else
 	{
-		g_print("blue_bus is Unchecked\n");
+		disable_bus(busBlueThreadCounter);
 	}
 }
 
