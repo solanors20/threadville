@@ -9,11 +9,9 @@ void* create_car(pthread_t thread) {
     srand(time(NULL));
     int color = rand() % 6; // There are six types of color
     int speed;
-    int destination = rand() % 179; //Number of destinies
+    int destination = rand() % 179; //Name of destinies
     char str_id[10];
     sprintf(str_id, "%d", thread);
-
-
     VEHICLE* v;
 
     switch (color) {
