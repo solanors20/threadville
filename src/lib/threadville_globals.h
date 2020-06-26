@@ -17,9 +17,4 @@ int busLightBlueThreadCounter=0;
 #define WIDTH 1080
 #define HEIGTH 720
 
-#define WIDTH_DA 1080
-#define HEIGTH_DA 720
-
-#define FPS 60
-
 #endif
