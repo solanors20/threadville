@@ -4,6 +4,8 @@
 
 #include "lib/threadville_globals.h"
 #include "lib/map.h"
+#include "lib/initialize.h"
+
 
 typedef struct {
 	  //checks
@@ -46,6 +48,9 @@ int main(int argc, char **argv)
 
 	/* Init GTK+ */
 	gtk_init(&argc, &argv);
+
+	/* Init logic*/
+	initialize();
 
 	/* Create new GtkBuilder object */
 	builder = gtk_builder_new_from_file("glade/threadville.glade");
