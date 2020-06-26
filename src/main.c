@@ -4,6 +4,7 @@
 
 #include "lib/threadville_globals.h"
 #include "lib/map.h"
+#include "lib/semaphore.h"
 
 typedef struct {
 	  //checks
@@ -37,17 +38,6 @@ static gboolean on_tick (gpointer user_data);
 int direction = 0;
 
 
-void* semaphoresBridgeControlWait(){
-
-	int random;
-
-	while(1){
-		random = rand()%40;
-		//printf("Cambiando los semáforos en puente %s en %i segundos \n", 'a', random);
-		sleep(5);
-		direction = (direction == 0) ? 1 : 0;
-	}
-}
 
 int main(int argc, char **argv) 
 {
@@ -106,17 +96,9 @@ int main(int argc, char **argv)
 
 	/* Show window. All other widgets are automatically shown by GtkBuilder */
 	gtk_widget_show(window);
-
-	int rc;
-	pthread_t northSemaphore_thread;
-	rc = pthread_create(&northSemaphore_thread, NULL, &semaphoresBridgeControlWait, NULL);
-	if (rc)
-    {
-            printf("error, return frim pthread creation\n");
-            exit(4);
-    }
+	create_semaphores(&direction);
 	tick_cb = g_timeout_add(1000 / FPS / 2, (GSourceFunc) on_tick, GINT_TO_POINTER(size)); 
-
+	
 	/* Start main loop */
 	gtk_main();
 
@@ -141,14 +123,7 @@ static gboolean on_tick (gpointer user_data) {
 
 void on_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data) {
 	draw_background(cr);
-	if(direction)
-        cairo_set_source_rgb (cr, 0.0, 1.0, 0.0);
-    else
-        cairo_set_source_rgb (cr, 1.0, 0.0, 0.0);
-        
-
-    cairo_rectangle(cr, 10, 5,TILESIZE,TILESIZE);
-    cairo_fill (cr);
+	draw_LarrySemaphore(direction, cr);
 }
 
 void on_btn_select_all_buses_clicked(GtkButton *button, AppWidgets *widgets)
