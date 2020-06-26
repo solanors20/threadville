@@ -7,11 +7,14 @@
 #include "threadville.h"
 #include "dijkstra.h"
 #include "constants.h"
-//#include "map.h"
+#include "bridge.h"
+#include "map.h"
 
 struct NODE* linkedList;
 
 THREADVILLE* threadville;
+
+BRIDGE *larry, *joe, *curly, *shemp, *moe;
 
 int highwayWeight = 1;
 int regularPathWeight = 10;
@@ -59,7 +62,6 @@ void fillLinkedList()
 
 void linkNodes (int index, int nextNode1, int nextNode2, NODE* linkedList)
 {
-
     if(nextNode1 != -1) 
     {
         linkedList[index].nextNode1 = &linkedList [nextNode1];
@@ -268,6 +270,31 @@ void setNextLink()
     printf("setNextLink()\n");
 }
 
+void createBridges()
+{
+    larry = createBridge("Larry", linkedList[96].nextNode1, 
+                         linkedList[61].nextNode1, linkedList[110].nextNode1, 
+                         linkedList[75].nextNode1);
+    
+    joe = createBridge("Joe", linkedList[104].nextNode1, 
+                         linkedList[69].nextNode1, linkedList[118].nextNode1, 
+                         linkedList[83].nextNode1);
+
+    curly = createBridge("Curly", linkedList[98].nextNode1, 
+                         linkedList[63].nextNode1, linkedList[112].nextNode1, 
+                         linkedList[77].nextNode1);
+
+    shemp = createBridge("Shemp", linkedList[102].nextNode1, 
+                         linkedList[67].nextNode1, linkedList[116].nextNode1, 
+                         linkedList[81].nextNode1);
+    
+    moe = createBridge("Moe", linkedList[100].nextNode1, 
+                         linkedList[65].nextNode1, linkedList[114].nextNode1, 
+                         linkedList[79].nextNode1);
+    
+    printf("createBridges()\n");
+}
+
 void setWeightsMatrix()
 {
     for(int i = 0; i < VERTEXES; i++)
@@ -314,40 +341,42 @@ void performDijkstra()
     printf("performDijkstra()\n");
 }
 
-// void setGraphCoordinatesForGui() 
-// {
-//     int i=0;
-//     for(int x = 0; x < ROWS; x++)
-//     {
-//         for(int y = 0; y < COLUMNS; y++)
-//         {
-//             if(map2[x][y] == 5)
-//             {
-//                 linkedList[i].x = y * TILE_SIZE + 10;
-//                 linkedList[i].y = x * TILE_SIZE;
-//                 i++;
-//             } 
-//             else if(map2[x][y] == 6)
-//             {
-//                 linkedList[i].x=y * TILE_SIZE;
-//                 linkedList[i].y=x * TILE_SIZE;
-//                 i++;
-//             }
-//             else if(map2[x][y] == 8) 
-//             {
-//                 linkedList[i].x = y * TILE_SIZE + 10;
-//                 linkedList[i].y = x * TILE_SIZE;
-//                 i++;
-//             }
-//             else if(map2[x][y] == 9)
-//             {
-//                 linkedList[i].x = y * TILE_SIZE + 10;
-//                 linkedList[i].y = x * TILE_SIZE;
-//                 i++;
-//             }         
-//         }
-//     }
-// }
+
+
+void setGraphCoordinatesForGui() 
+{
+    int i=0;
+    for(int x = 0; x < ROWS; x++)
+    {
+        for(int y = 0; y < COLUMNS; y++)
+        {
+            if(map2[x][y] == 5)
+            {
+                linkedList[i].x = y * TILE_SIZE + 10;
+                linkedList[i].y = x * TILE_SIZE;
+                i++;
+            } 
+            else if(map2[x][y] == 6)
+            {
+                linkedList[i].x=y * TILE_SIZE;
+                linkedList[i].y=x * TILE_SIZE;
+                i++;
+            }
+            else if(map2[x][y] == 8) 
+            {
+                linkedList[i].x = y * TILE_SIZE + 10;
+                linkedList[i].y = x * TILE_SIZE;
+                i++;
+            }
+            else if(map2[x][y] == 9)
+            {
+                linkedList[i].x = y * TILE_SIZE + 10;
+                linkedList[i].y = x * TILE_SIZE;
+                i++;
+            }         
+        }
+    }
+}
 
 void findAndPrintShortestPath() 
 {
