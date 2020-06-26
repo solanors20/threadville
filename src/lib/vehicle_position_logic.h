@@ -1,5 +1,5 @@
-#ifndef BUS_LOGIC_H_
-#define BUS_LOGIC_H_
+#ifndef VEHICLE_POSITION_LOGIC_H_
+#define VEHICLE_POSITION_LOGIC_H_
 
 #include <pthread.h>
 #include <unistd.h>
