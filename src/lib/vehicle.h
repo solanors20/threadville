@@ -13,37 +13,37 @@
 
 typedef struct VEHICLE
 {
-	char *id;
-	int type; 
-	int delay;
-	bool run;
-	int x, y;
-	int dx, dy;
-	int speed;
+    char *id;
+    int type; 
+    int delay;
+    bool run;
+    int x, y;
+    int dx, dy;
+    int speed;
     int color;
-	int width, height;
-	int stopsCounter;
+    int width, height;
+    int stopsCounter;
     char *nextDestination;
     struct ROUTE *route;
-	struct VEHICLE *next;
+    struct VEHICLE *next;
     struct NODE **stops;
 } VEHICLE;
 
 VEHICLE* createCar(char *id, int carSpeed)
 {
-	VEHICLE *car = malloc(sizeof(VEHICLE));
-	
+    VEHICLE *car = malloc(sizeof(VEHICLE));
+    
     car->id = strdup(id);
-	car->type = CAR;
-	car->delay = 3;
+    car->type = CAR;
+    car->delay = 3;
     car->run=true;
-	car->dx=1;
-	car->dy=0;
+    car->dx=1;
+    car->dy=0;
     
     if(carSpeed == 0) 
     {
         srand(time(NULL));
-	    car->speed=rand()%7;
+        car->speed=rand()%7;
     }
     else
     {
@@ -51,21 +51,21 @@ VEHICLE* createCar(char *id, int carSpeed)
     }
     
     car->color = car->speed;
-	car->width=TILE_SIZE;
-	car->height=TILE_SIZE;
-	car->nextDestination = "-";
+    car->width=TILE_SIZE;
+    car->height=TILE_SIZE;
+    car->nextDestination = "-";
     car->next = NULL;
-	car->route = NULL;
-	
+    car->route = NULL;
+    
     return car;
 }
 
 VEHICLE* createBus(char *id, int speed, int color)
 {
-	VEHICLE *bus = malloc(sizeof(VEHICLE));
-	bus->id = strdup(id);
-	bus->type = BUS;
-	bus->delay = 3;
+    VEHICLE *bus = malloc(sizeof(VEHICLE));
+    bus->id = strdup(id);
+    bus->type = BUS;
+    bus->delay = 3;
     bus->run = true;
     bus->x = 0;
     bus->y = 0;
@@ -76,16 +76,16 @@ VEHICLE* createBus(char *id, int speed, int color)
     bus->width = TILE_SIZE;
     bus->height = TILE_SIZE;
     bus->next = NULL;
-	bus->route = NULL;
+    bus->route = NULL;
 
-	return bus;
+    return bus;
 }
 
 VEHICLE* createAmbulance(char *id)
 {
     VEHICLE *ambulance = malloc(sizeof(VEHICLE));
     ambulance->id = strdup(id);
-	ambulance->type = AMBULANCE;
+    ambulance->type = AMBULANCE;
     ambulance->delay = 3;
     ambulance->run = true;
     ambulance->x = 0;
@@ -97,16 +97,16 @@ VEHICLE* createAmbulance(char *id)
     ambulance->width = TILE_SIZE;
     ambulance->height = TILE_SIZE;
     ambulance->next = NULL;
-	ambulance->route = NULL;
+    ambulance->route = NULL;
 
-	return ambulance;
+    return ambulance;
 }
 
 void generateRoute(VEHICLE *vehicle, NODE *start, NODE *end)
 {
     ROUTE *route = createRoute();
-	route->destination = createDestination();
-	DESTINATION *destination = route->destination;
+    route->destination = createDestination();
+    DESTINATION *destination = route->destination;
     
     int size;
     
@@ -115,9 +115,9 @@ void generateRoute(VEHICLE *vehicle, NODE *start, NODE *end)
     
     int *shortestPath = getPath(start->id, end->id, start->paths, path, &size);
 
-	for(int i = 0; i < size; i++)
+    for(int i = 0; i < size; i++)
     {
-        destination->node = linkedList[shortestPath[i]];		
+        destination->node = linkedList[shortestPath[i]];        
         destination->next = createDestination();
         
         if(i == (size-1))
@@ -128,22 +128,22 @@ void generateRoute(VEHICLE *vehicle, NODE *start, NODE *end)
         {
             destination = destination->next;
         }
-	}
+    }
 
     vehicle->route = createRoute();
-	vehicle->route = route;
+    vehicle->route = route;
 }
 
 void releaseVehicle(VEHICLE *vehicle)
 {
-	if(vehicle)
+    if(vehicle)
     {
-		if(vehicle->id)
+        if(vehicle->id)
         {
-			free(vehicle->id);
-		}
-	    free(vehicle);
-	}
+            free(vehicle->id);
+        }
+        free(vehicle);
+    }
 }
 
 #endif
