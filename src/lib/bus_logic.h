@@ -16,7 +16,7 @@ void enable_red_bus()
   int stopsCounter = 12;
   char *name = "RED-BUS";
   busRedThreadCounter = threadCounter;
-  add_bus(name, stopsCounter, stops, 5, 1);
+  add_bus(name, stopsCounter, stops, 5, RED);
 }
 
 void enable_green_bus()
@@ -25,7 +25,7 @@ void enable_green_bus()
   int totalStops = 6;
   char *name = "GREEN-BUS";
   busGreenThreadCounter = threadCounter;
-  add_bus(name, totalStops, stops, 1, 3);
+  add_bus(name, totalStops, stops, 5, GREEN);
 }
 
 void enable_blue_bus()
@@ -34,7 +34,7 @@ void enable_blue_bus()
   int totalStops = 6;
   char *name = "BLUE-BUS";
   busBlueThreadCounter = threadCounter;
-  add_bus(name, totalStops, stops, 5, 2);
+  add_bus(name, totalStops, stops, 5, BLUE);
 }
 
 void enable_white_bus()
@@ -43,7 +43,7 @@ void enable_white_bus()
   int totalStops = 6;
   char *name = "WHITE-BUS";
   busWhiteThreadCounter = threadCounter;
-  add_bus(name, totalStops, stops, 4, 5);
+  add_bus(name, totalStops, stops, 4, WHITE);
 }
 
 void enable_gray_bus()
@@ -52,7 +52,7 @@ void enable_gray_bus()
   int totalStops = 6;
   char *name = "GRAY-BUS";
   busGrayThreadCounter = threadCounter;
-  add_bus(name, totalStops, stops, 4, 8);
+  add_bus(name, totalStops, stops, 4, GRAY);
 }
 
 void enable_black_bus()
@@ -61,7 +61,7 @@ void enable_black_bus()
   int totalStops = 6;
   char *name = "BLACK-BUS";
   busBlackThreadCounter = threadCounter;
-  add_bus(name, totalStops, stops, 4, 4);
+  add_bus(name, totalStops, stops, 4, BLACK);
 }
 
 void enable_orange_bus()
@@ -70,7 +70,25 @@ void enable_orange_bus()
   int totalStops = 22;
   char *name = "ORANGE-BUS";
   busOrangeThreadCounter = threadCounter;
-  add_bus(name, totalStops, stops, 7, 7);
+  add_bus(name, totalStops, stops, 7, ORANGE);
+}
+
+void enable_pink_bus()
+{
+  int stops[22] = {47, 36, 0, 11};
+  int totalStops = 4;
+  char *name = "PINK-BUS";
+  busPinkThreadCounter = threadCounter;
+  add_bus(name, totalStops, stops, 3, PINK);
+}
+
+void enable_lightblue_bus()
+{
+  int stops[22] = {168, 132, 143, 179};
+  int totalStops = 4;
+  char *name = "LIGHT-BLUE-BUS";
+  busLightBlueThreadCounter = threadCounter;
+  add_bus(name, totalStops, stops, 3, LIGHT_BLUE);
 }
 
 void init_buses()
@@ -81,8 +99,8 @@ void init_buses()
   enable_white_bus();
   enable_gray_bus();
   enable_black_bus();
-  //enable_pink_bus();
-  //enable_lightblue_bus();
+  enable_pink_bus();
+  enable_lightblue_bus();
   enable_orange_bus();
 }
 
