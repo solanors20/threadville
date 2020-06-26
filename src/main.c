@@ -1,9 +1,11 @@
 #include <gtk/gtk.h>
 #include <unistd.h>
 #include <unistd.h>
-
+#include <stdlib.h>
 #include "lib/threadville_globals.h"
 #include "lib/map.h"
+#include <time.h>
+#include <pthread.h>
 
 typedef struct {
 	  //checks
@@ -26,6 +28,41 @@ typedef struct {
 		GtkWidget *w_entry_car;
 
 } AppWidgets;
+void* create_car(void * arg) {
+    srand(time(NULL));
+    int color = rand() % 6; // There are six types of color
+    int speed = rand() % 6; // There are six types of color
+    int num_destinations = rand() % 4; //Number of destinies
+
+    switch (color) {
+        case 1:
+            g_print("color: red\n");
+            break;
+
+        case 2:
+            g_print("color: blue\n");
+            break;
+
+        case 3:
+            g_print("color: green\n");
+            break;
+
+        case 4:
+            g_print("color: black\n");
+            break;
+        case 5:
+            g_print("color: white\n");
+            break;
+        case 6:
+            g_print("color: yellow\n");
+            break;
+        default:
+            g_print("something went wrong\n");
+    }
+    g_print("color: %d\n", color);
+    g_print("speed: %d \n", speed);
+    g_print("number of destinations: %d \n", num_destinations);
+}
 
 int main(int argc, char **argv) 
 {
@@ -212,7 +249,9 @@ void on_check_orange_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widg
 
 void on_btn_create_random_car_clicked(GtkButton *button, AppWidgets *widgets)
 {
-	g_print("Random car clicked\n");
+    pthread_t new_car;
+    pthread_create(&new_car, NULL, create_car, NULL);
+    g_print("placa: %ld\n", new_car);
 }
 
 void on_btn_create_random_ambulance_clicked(GtkButton *button, AppWidgets *widgets)
