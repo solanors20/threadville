@@ -253,11 +253,11 @@ void on_check_white_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widge
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("white_bus is Checked\n");
+		enable_white_bus();
 	}
 	else
 	{
-		g_print("white_bus is Unchecked\n");
+		disable_bus(busWhiteThreadCounter);
 	}
 }
 
@@ -265,11 +265,11 @@ void on_check_gray_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widget
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("gray_bus is Checked\n");
+		enable_gray_bus();
 	}
 	else
 	{
-		g_print("gray_bus is Unchecked\n");
+		disable_bus(busGrayThreadCounter);
 	}
 }
 
@@ -277,11 +277,11 @@ void on_check_black_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widge
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("black_bus is Checked\n");
+		enable_black_bus();
 	}
 	else
 	{
-		g_print("black_bus is Unchecked\n");
+		disable_bus(busBlackThreadCounter);
 	}
 }
 
@@ -313,11 +313,11 @@ void on_check_orange_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widg
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("orange_bus is Checked\n");
+		enable_orange_bus();
 	}
 	else
 	{
-		g_print("orange_bus is Unchecked\n");
+		disable_bus(busOrangeThreadCounter);
 	}
 }
 
