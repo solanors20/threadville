@@ -27,6 +27,12 @@ typedef struct {
 
 } AppWidgets;
 
+static gint64 last_tick = 0;
+static guint tick_cb = 0;
+static guint size =32;
+
+
+
 int main(int argc, char **argv) 
 {
 	GtkBuilder *builder;
@@ -82,12 +88,28 @@ int main(int argc, char **argv)
 	/* Show window. All other widgets are automatically shown by GtkBuilder */
 	gtk_widget_show(window);
 
+	tick_cb = g_timeout_add(1000 / FPS / 2, (GSourceFunc) on_tick, GINT_TO_POINTER(size)); 
+
 	/* Start main loop */
 	gtk_main();
 
 	g_slice_free(AppWidgets, widgets);
 
 	return (0);
+}
+
+gboolean on_tick (gpointer user_data) {
+    gint64 current = g_get_real_time ();
+    gboolean changed = FALSE;
+    if ((current - last_tick) < (1000/ FPS)) {
+        last_tick = current;
+        return G_SOURCE_CONTINUE;
+    }
+
+    gtk_widget_queue_draw_area(drawing, 0, 0, WIDTH, HEIGTH);
+
+    last_tick = current;
+    return G_SOURCE_CONTINUE;
 }
 
 void on_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data) {
