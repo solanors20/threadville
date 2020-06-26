@@ -51,9 +51,17 @@ void enable_white_bus() {
 void enable_gray_bus() {
     int stops[6] = {173, 112, 52, 6, 67, 127};
     int totalStops = 6;
-    char *name = "GRIS-BUS";
+    char *name = "GRAY-BUS";
     busGrayThreadCounter = threadCounter;
     add_bus(name, totalStops, stops, 4, 8);
+}
+
+void enable_black_bus() {
+    int stops[6] = {54, 8, 69, 129, 175, 114};
+    int totalStops = 6;
+    char *name = "BLACK-BUS";
+    busBlackThreadCounter = threadCounter;
+    add_bus(name, totalStops, stops, 4, 4);
 }
 
 
@@ -64,6 +72,7 @@ void init_buses()
   enable_blue_bus();
   enable_white_bus();
   enable_gray_bus();
+  enable_black_bus();
 }
 
 #endif

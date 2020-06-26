@@ -277,11 +277,11 @@ void on_check_black_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widge
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("black_bus is Checked\n");
+		enable_black_bus();
 	}
 	else
 	{
-		g_print("black_bus is Unchecked\n");
+		disable_bus(busBlackThreadCounter);
 	}
 }
 
