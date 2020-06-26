@@ -25,7 +25,6 @@ typedef struct VEHICLE
     int stopsCounter;
     char *nextDestination;
     struct ROUTE *route;
-    struct VEHICLE *next;
     struct NODE **stops;
 } VEHICLE;
 
@@ -56,7 +55,6 @@ VEHICLE* createCar(char *id, int carSpeed)
     car->width=TILE_SIZE;
     car->height=TILE_SIZE;
     car->nextDestination = "-";
-    car->next = NULL;
     car->route = NULL;
     
     return car;
@@ -77,7 +75,6 @@ VEHICLE* createBus(char *id, int speed, int color)
     bus->color = color;
     bus->width = TILE_SIZE;
     bus->height = TILE_SIZE;
-    bus->next = NULL;
     bus->route = NULL;
 
     return bus;
@@ -98,7 +95,6 @@ VEHICLE* createAmbulance(char *id)
     ambulance->color = 10; // TO-DO set correct color
     ambulance->width = TILE_SIZE;
     ambulance->height = TILE_SIZE;
-    ambulance->next = NULL;
     ambulance->route = NULL;
 
     return ambulance;

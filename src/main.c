@@ -6,6 +6,7 @@
 #include "lib/semaphore.h"
 #include "lib/initialize.h"
 #include "lib/bus_logic.h"
+#include "lib/constants.h"
 
 typedef struct
 {
@@ -154,12 +155,12 @@ static void draw_car(cairo_t *cr, VEHICLE *vehicule)
 
 		if (vehicule->type == CAR)
 		{
-			cairo_arc(cr, vehicule->x, vehicule->y + 10, TILESIZE / 2, 0, 2 * 3.14);
+			cairo_arc(cr, vehicule->x, vehicule->y + 10, TILE_SIZE / 2, 0, 2 * 3.14);
 			cairo_fill(cr);
 		}
 		else
 		{
-			cairo_rectangle(cr, vehicule->x - 10, vehicule->y, TILESIZE + TILESIZE * fabs(vehicule->dx), TILESIZE + TILESIZE * fabs(vehicule->dy));
+			cairo_rectangle(cr, vehicule->x - 10, vehicule->y, TILE_SIZE + TILE_SIZE * fabs(vehicule->dx), TILE_SIZE + TILE_SIZE * fabs(vehicule->dy));
 			cairo_fill(cr);
 		}
 

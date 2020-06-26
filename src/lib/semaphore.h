@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include "graph.h"
+#include "constants.h"
 #ifndef TV_ADT
 
 
@@ -33,7 +34,7 @@ void draw_semaphore_by_node(NODE *node, cairo_t *cr){
         cairo_set_source_rgb (cr, 0.0, 1.0, 0.0);
     else
         cairo_set_source_rgb (cr, 1.0, 0.0, 0.0);
-    cairo_rectangle(cr, node->x-10, node->y,TILESIZE,TILESIZE);
+    cairo_rectangle(cr, node->x-10, node->y, TILE_SIZE, TILE_SIZE);
     cairo_fill (cr);
 }
 
