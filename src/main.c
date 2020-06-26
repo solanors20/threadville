@@ -176,7 +176,7 @@ void on_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data) {
 	draw_background(cr);
 
 	int i;
-	for(i=0; i<contadorHilos; i++){
+	for(i=0; i<threadCounter; i++){
 			draw_car(cr, vehicules[i]);
 	} // for 
 }

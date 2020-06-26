@@ -12,17 +12,17 @@
 #define MP 5
 
 
-int contadorHilos=0;
+int threadCounter=0;
 
-int hiloBusNaranja=0;
-int hiloBusRojo=0;
-int hiloBusVerde=0;
-int hiloBusAzul=0;
-int hiloBusBlanco=0;
-int hiloBusNegro=0;
-int hiloBusGris=0;
-int hiloBusRosa=0;
-int hiloBusCeleste=0;
+int busOrangeThreadCounter=0;
+int busRedThreadCounter=0;
+int busGreenThreadCounter=0;
+int busBlueThreadCounter=0;
+int busWhiteThreadCounter=0;
+int busBlackThreadCounter=0;
+int busGrayThreadCounter=0;
+int busPinkThreadCounter=0;
+int busLightBlueThreadCounter=0;
 
 #define WIDTH 1080
 #define HEIGTH 720
@@ -31,12 +31,6 @@ int hiloBusCeleste=0;
 #define HEIGTH_DA 720
 
 #define TILESIZE 20
-
-#define FILAS 34
-#define COLUMNAS 48
-
-#define FILAS2 34
-#define COLUMNAS2 52
 
 #define P 168
 

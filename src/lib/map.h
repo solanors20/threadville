@@ -1,6 +1,8 @@
 #ifndef MAP_H_
 #define MAP_H_
 
+#include "constants.h"
+
 char* paradas[P]={
     "1","2","1","2","1","2","1","2","1","2","1","2",
     "8","3","8","3","8","3","8","3","8","3","8","3",
@@ -19,7 +21,7 @@ char* paradas[P]={
 };
 
 
-int map2[FILAS2][COLUMNAS2]={
+int map2[ROWS][COLUMNS]={
         {0,0,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,1,1,5,1,1,5,1,1,0,0},
         {0,0,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,1,2,4,2,2,4,2,1,0,0},
         {0,0,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,5,4,2,2,2,2,4,5,0,0},
@@ -61,8 +63,8 @@ int map2[FILAS2][COLUMNAS2]={
 static void draw_background (cairo_t * cr) {
 
     int x, y, p=0;
-    for(x=0; x<FILAS2;x++){
-        for(y=0; y<COLUMNAS2; y++){
+    for(x=0; x<ROWS;x++){
+        for(y=0; y<COLUMNS; y++){
             if(map2[x][y]==1){ //calle
                 cairo_set_source_rgb (cr, 0.5, 0.5, 0.5); //gris_de_calle -> rgb(0.17, 0.18, 0.18)
                 cairo_rectangle(cr,y*TILESIZE,x*TILESIZE,TILESIZE,TILESIZE);
