@@ -313,11 +313,11 @@ void on_check_orange_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widg
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("orange_bus is Checked\n");
+		enable_orange_bus();
 	}
 	else
 	{
-		g_print("orange_bus is Unchecked\n");
+		disable_bus(busOrangeThreadCounter);
 	}
 }
 

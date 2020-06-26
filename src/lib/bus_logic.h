@@ -19,8 +19,6 @@ void enable_red_bus()
   add_bus(name, stopsCounter, stops, 5, 1);
 }
 
-
-
 void enable_green_bus()
 {
   int stops[6] = {9, 59, 87, 92, 48, 2};
@@ -29,7 +27,6 @@ void enable_green_bus()
   busGreenThreadCounter = threadCounter;
   add_bus(name, totalStops, stops, 5, 3);
 }
-
 
 void enable_blue_bus()
 {
@@ -40,30 +37,41 @@ void enable_blue_bus()
   add_bus(name, totalStops, stops, 5, 2);
 }
 
-void enable_white_bus() {
-     int stops[6] = {65, 125, 171, 110, 50, 4};
-     int totalStops = 6;
-     char *name = "WHITE-BUS";
-     busWhiteThreadCounter = threadCounter;
-     add_bus(name, totalStops, stops, 4, 5);
+void enable_white_bus()
+{
+  int stops[6] = {65, 125, 171, 110, 50, 4};
+  int totalStops = 6;
+  char *name = "WHITE-BUS";
+  busWhiteThreadCounter = threadCounter;
+  add_bus(name, totalStops, stops, 4, 5);
 }
 
-void enable_gray_bus() {
-    int stops[6] = {173, 112, 52, 6, 67, 127};
-    int totalStops = 6;
-    char *name = "GRAY-BUS";
-    busGrayThreadCounter = threadCounter;
-    add_bus(name, totalStops, stops, 4, 8);
+void enable_gray_bus()
+{
+  int stops[6] = {173, 112, 52, 6, 67, 127};
+  int totalStops = 6;
+  char *name = "GRAY-BUS";
+  busGrayThreadCounter = threadCounter;
+  add_bus(name, totalStops, stops, 4, 8);
 }
 
-void enable_black_bus() {
-    int stops[6] = {54, 8, 69, 129, 175, 114};
-    int totalStops = 6;
-    char *name = "BLACK-BUS";
-    busBlackThreadCounter = threadCounter;
-    add_bus(name, totalStops, stops, 4, 4);
+void enable_black_bus()
+{
+  int stops[6] = {54, 8, 69, 129, 175, 114};
+  int totalStops = 6;
+  char *name = "BLACK-BUS";
+  busBlackThreadCounter = threadCounter;
+  add_bus(name, totalStops, stops, 4, 4);
 }
 
+void enable_orange_bus()
+{
+  int stops[22] = {121, 124, 16, 17, 125, 128, 20, 21, 129, 167, 166, 58, 55, 163, 162, 54, 51, 159, 158, 50, 12, 13};
+  int totalStops = 22;
+  char *name = "ORANGE-BUS";
+  busOrangeThreadCounter = threadCounter;
+  add_bus(name, totalStops, stops, 7, 7);
+}
 
 void init_buses()
 {
@@ -73,6 +81,9 @@ void init_buses()
   enable_white_bus();
   enable_gray_bus();
   enable_black_bus();
+  //enable_pink_bus();
+  //enable_lightblue_bus();
+  enable_orange_bus();
 }
 
 #endif
