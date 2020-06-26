@@ -32,19 +32,19 @@ bool are_two_vehicles_near(VEHICLE *car1, VEHICLE *car2)
 void *update_car_position(void *car)
 {
   VEHICLE *tempCar = (VEHICLE *)car;
-  int p = 0;
+  int stopIndex = 0;
 
-  generateRoute(tempCar, tempCar->stops[p], tempCar->stops[p + 1]);
+  generateRoute(tempCar, tempCar->stops[stopIndex], tempCar->stops[stopIndex + 1]);
 
   DESTINATION *currentDestination = tempCar->route->destination;
   currentDestination = currentDestination->next;
-  tempCar->nextDestination = tempCar->stops[p + 1]->name;
+  tempCar->nextDestination = tempCar->stops[stopIndex + 1]->name;
 
   bool canMove = true;
   while (tempCar->run)
   {
 
-    if (p < tempCar->stopsCounter - 1)
+    if (stopIndex < tempCar->stopsCounter - 1)
     {
       int i = 0;
 
@@ -76,15 +76,15 @@ void *update_car_position(void *car)
         }
         else
         {
-          ++p;
-          if (p < tempCar->stopsCounter - 1)
+          ++stopIndex;
+          if (stopIndex < tempCar->stopsCounter - 1)
           {
-            generateRoute(tempCar, tempCar->stops[p % tempCar->stopsCounter], tempCar->stops[(p + 1) % tempCar->stopsCounter]);
+            generateRoute(tempCar, tempCar->stops[stopIndex % tempCar->stopsCounter], tempCar->stops[(stopIndex + 1) % tempCar->stopsCounter]);
             currentDestination = tempCar->route->destination;
             currentDestination = currentDestination->next;
 
             usleep(tempCar->delay * 1000000);
-            tempCar->nextDestination = tempCar->stops[p + 1]->name;
+            tempCar->nextDestination = tempCar->stops[stopIndex + 1]->name;
           }
           else
           {
@@ -99,19 +99,19 @@ void *update_car_position(void *car)
             }
             else
             {
-              generateRoute(tempCar, tempCar->stops[p], tempCar->stops[0]);
+              generateRoute(tempCar, tempCar->stops[stopIndex], tempCar->stops[0]);
               currentDestination = tempCar->route->destination;
               currentDestination = currentDestination->next;
 
               usleep(tempCar->delay * 1000000);
               tempCar->nextDestination = tempCar->stops[0]->name;
-              p = -1;
+              stopIndex = -1;
             }
           }
         }
       }
 
-      for (i; i < contadorHilos; i++)
+      for (i; i < threadCounter; i++)
       {
 
         if (!are_two_vehicles_near(tempCar, vehicules[i]))
@@ -123,7 +123,7 @@ void *update_car_position(void *car)
           canMove = false;
           break;
         }
-      } // for
+      } 
       if (canMove)
       {
         if (currentDestination->node.isSpecial && currentDestination->node.isFree == false)
@@ -151,7 +151,7 @@ void *update_car_position(void *car)
       }
       else
       {
-        p = 0;
+        stopIndex = 0;
       }
     }
 
@@ -164,26 +164,26 @@ void add_bus(char *id, int stopsCounter, int stops[], int speed, int color)
   char *_id = id;
   int rc;
 
-  vehicules[contadorHilos] = createBus(_id, speed, color);
+  vehicules[threadCounter] = createBus(_id, speed, color);
   srand(time(NULL));
-  vehicules[contadorHilos]->stopsCounter = stopsCounter;
-  vehicules[contadorHilos]->stops = (NODE **)calloc(vehicules[contadorHilos]->stopsCounter, sizeof(NODE *));
+  vehicules[threadCounter]->stopsCounter = stopsCounter;
+  vehicules[threadCounter]->stops = (NODE **)calloc(vehicules[threadCounter]->stopsCounter, sizeof(NODE *));
 
   for (int i = 0; i < stopsCounter; i++)
   {
-    vehicules[contadorHilos]->stops[i] = &linkedList[stops[i]];
+    vehicules[threadCounter]->stops[i] = &linkedList[stops[i]];
   }
 
-  vehicules[contadorHilos]->x = linkedList[stops[0]].x;
-  vehicules[contadorHilos]->y = linkedList[stops[0]].y;
+  vehicules[threadCounter]->x = linkedList[stops[0]].x;
+  vehicules[threadCounter]->y = linkedList[stops[0]].y;
 
-  rc = pthread_create(&threads[contadorHilos], NULL, update_car_position, (void *)vehicules[contadorHilos]);
+  rc = pthread_create(&threads[threadCounter], NULL, update_car_position, (void *)vehicules[threadCounter]);
   if (rc)
   {
     printf("error, return frim pthread creation\n");
     exit(4);
   }
-  contadorHilos++;
+  threadCounter++;
 }
 
 #endif
