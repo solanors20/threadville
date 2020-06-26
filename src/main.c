@@ -152,7 +152,7 @@ static void draw_car(cairo_t *cr, VEHICLE *vehicule)
 		else if (vehicule->color == 10)
 			cairo_set_source_rgb(cr, 0.75, 0.9, 0.92);
 
-		if (vehicule->type == 1)
+		if (vehicule->type == CAR)
 		{
 			cairo_arc(cr, vehicule->x, vehicule->y + 10, TILESIZE / 2, 0, 2 * 3.14);
 			cairo_fill(cr);
