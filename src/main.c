@@ -134,25 +134,25 @@ static void draw_car(cairo_t *cr, VEHICLE *vehicule)
 {
 	if (vehicule->run)
 	{
-		if (vehicule->color == 1)
+		if (vehicule->color == RED)
 			cairo_set_source_rgb(cr, 1.0, 0.0, 0.0);
-		else if (vehicule->color == 2)
+		else if (vehicule->color == BLUE)
 			cairo_set_source_rgb(cr, 0.0, 0.0, 1.0);
-		else if (vehicule->color == 3)
+		else if (vehicule->color == GREEN)
 			cairo_set_source_rgb(cr, 0.0, 1.0, 0.0);
-		else if (vehicule->color == 4)
+		else if (vehicule->color == BLACK)
 			cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
-		else if (vehicule->color == 5)
+		else if (vehicule->color == WHITE)
 			cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-		else if (vehicule->color == 6)
+		else if (vehicule->color == YELLOW)
 			cairo_set_source_rgb(cr, 1.0, 1.0, 0.0);
-		else if (vehicule->color == 7)
+		else if (vehicule->color == ORANGE)
 			cairo_set_source_rgb(cr, 1.0, 0.5, 0.0);
-		else if (vehicule->color == 8)
+		else if (vehicule->color == GRAY)
 			cairo_set_source_rgb(cr, 0.7, 0.7, 0.7);
-		else if (vehicule->color == 9)
+		else if (vehicule->color == PINK)
 			cairo_set_source_rgb(cr, 1.0, 0.4, 0.45);
-		else if (vehicule->color == 10)
+		else if (vehicule->color == LIGHT_BLUE)
 			cairo_set_source_rgb(cr, 0.75, 0.9, 0.92);
 
 		if (vehicule->type == CAR)
@@ -292,11 +292,11 @@ void on_check_pink_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widget
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("pink_bus is Checked\n");
+		enable_pink_bus();
 	}
 	else
 	{
-		g_print("pink_bus is Unchecked\n");
+		disable_bus(busPinkThreadCounter);
 	}
 }
 
@@ -304,11 +304,11 @@ void on_check_light_blue_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("light_blue_bus is Checked\n");
+		enable_lightblue_bus();
 	}
 	else
 	{
-		g_print("light_blue_bus is Unchecked\n");
+		disable_bus(busLightBlueThreadCounter);
 	}
 }
 
