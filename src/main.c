@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 	/* Init logic*/
 	initialize();
 
-	initBuses();
+	init_buses();
 
 	/* Create new GtkBuilder object */
 	builder = gtk_builder_new_from_file("glade/threadville.glade");
@@ -182,7 +182,7 @@ void on_draw (GtkWidget *widget, cairo_t *cr, gpointer user_data) {
 
 
 	int i;
-	for(i=0; i<contadorHilos; i++){
+	for(i=0; i<threadCounter; i++){
 			draw_car(cr, vehicules[i]);
 	} // for 
 

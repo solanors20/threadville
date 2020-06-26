@@ -3,15 +3,13 @@
 
 #include "vehicle_position_logic.h"
 
-//----------------------------------BUS ROJO
-void init_busRojo() {
-    int paradas[12] = {0, 6, 11, 71, 86, 119, 179, 173, 168, 108, 92, 60};
-    int cantidadParadas = 12;
-    char *name = "BUS-ROJO";
-    hiloBusRojo = contadorHilos;
-    add_bus(name, cantidadParadas, paradas, 5, 1);
 
-    //Periferica Grande - Roja> A1, D1, F2, L4, Z (dandole la vuelta), R2, X5, U5, S6, M1, Y (dandole la vuelta)
+void init_red_bus() {
+    int stops[12] = {0, 6, 11, 71, 86, 119, 179, 173, 168, 108, 92, 60};
+    int stopsCounter = 12;
+    char *name = "RED-BUS";
+    busRedThreadCounter = threadCounter;
+    add_bus(name, stopsCounter, stops, 5, 1);
 }
 
 //----------------------------------GREEN-BUS
@@ -22,9 +20,10 @@ void init_GreenBus() {
     add_bus(name, totalStops, stops, 5, 3);
 }
 
-void initBuses()
+
+void init_buses()
 {
-	init_busRojo();
+	init_red_bus();
     init_GreenBus();
 }
 
