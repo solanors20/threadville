@@ -43,7 +43,6 @@ char ch_arr[VERTEXES][6] = {"A1", "A2", "B1", "B2", "C1", "C2", "D1", "D2", "E1"
 void initLinkedList()
 {
     linkedList = malloc(VERTEXES * sizeof(struct NODE));
-    printf("initLinkedList()\n");
 }
 
 void addNode (NODE* node, int position)
@@ -57,7 +56,6 @@ void fillLinkedList()
     {
         addNode(createNode(i, ch_arr[i], 2), i);
     }
-    printf("fillLinkedList()\n");
 }
 
 void linkNodes (int index, int nextNode1, int nextNode2, NODE* linkedList)
@@ -266,8 +264,6 @@ void setNextLink()
     // Head node of the linked list is assigned to Threadville
     threadville = createThreadville();
     threadville->node = linkedList[74];
-    
-    printf("setNextLink()\n");
 }
 
 void createBridges()
@@ -291,8 +287,6 @@ void createBridges()
     moe = createBridge("Moe", linkedList[100].nextNode1, 
                          linkedList[65].nextNode1, linkedList[114].nextNode1, 
                          linkedList[79].nextNode1);
-    
-    printf("createBridges()\n");
 }
 
 void setWeightsMatrix()
@@ -327,8 +321,6 @@ void setWeightsMatrix()
             }
         }
     }
-
-    printf("setWeightsMatrix()\n");
 }
 
 void performDijkstra()
@@ -337,8 +329,6 @@ void performDijkstra()
     {
         dijkstra(weights, linkedList[i].id, linkedList[i].paths);
     }
-    
-    printf("performDijkstra()\n");
 }
 
 
@@ -376,26 +366,6 @@ void setGraphCoordinatesForGui()
             }         
         }
     }
-}
-
-void findAndPrintShortestPath() 
-{
-    printf("%s\n", linkedList[11].name);
-    printf("%s\n", linkedList[60].name);
-
-    int size;
-    int path[VERTEXES];
-    initArray(path);
-    
-    int *result = getPath(linkedList[11].id, linkedList[60].id, linkedList[11].paths, path, &size);
-    
-    printf("size %d\n", size);
-
-    for(int p = 0; p < size; p++){
-        printf("\t%d", result[p]);
-    }
-
-    printf("\nfindAndPrintShortestPath()\n");
 }
 
 #endif
