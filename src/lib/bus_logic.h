@@ -14,17 +14,25 @@ void init_red_bus() {
 
 //----------------------------------GREEN-BUS
 void init_GreenBus() {
-    int stops[6] = {2, 9, 59, 86, 83, 48};
+    int stops[6] = {2, 9, 59, 89, 93, 48};
     int totalStops = 6;
     char *name = "GREEN-BUS";
-    add_bus(name, totalStops, stops, 5, 3);
+    add_bus(name, totalStops, stops, 5, 3); 
 }
 
+//----------------------------------Blue-BUS
+void init_BlueBus() {
+    int stops[6] = {131, 177, 170, 120, 93, 89};
+    int totalStops = 6;
+    char *name = "BLUE-BUS";
+    add_bus(name, totalStops, stops, 5, 2); 
+}
 
 void init_buses()
 {
 	init_red_bus();
     init_GreenBus();
+    init_BlueBus();
 }
 
 #endif
