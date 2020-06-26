@@ -7,7 +7,7 @@ OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
 EXECUTABLE=threadville
 ODIR=target
 #CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG -fPIC $(OPTFLAGS)
-LDFLAGS='-export-dynamic'
+LDFLAGS='-export-dynamic' 
 
 
 all: clean $(EXECUTABLE)
@@ -17,7 +17,7 @@ build:
 	mv *.o src/ 
 
 $(EXECUTABLE): $(ODIR) build
-	$(CC) $(OBJECTS) -o $(ODIR)/$(EXECUTABLE) -Wl,--export-dynamic `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` -pthread
+	$(CC) $(OBJECTS) -o $(ODIR)/$(EXECUTABLE) -Wl,--export-dynamic `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` -pthread 
 
 $(ODIR):
 	mkdir target/

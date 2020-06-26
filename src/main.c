@@ -1,10 +1,10 @@
 #include <gtk/gtk.h>
 #include <unistd.h>
 #include <unistd.h>
-
 #include "lib/threadville_globals.h"
 #include "lib/map.h"
 #include "lib/semaphore.h"
+#include "lib/initialize.h"
 
 typedef struct {
 	  //checks
@@ -35,8 +35,8 @@ static guint size =32;
 static GtkWidget *draw;
 
 static gboolean on_tick (gpointer user_data);
-int direction = 0;
 
+int direction = 0;
 
 
 int main(int argc, char **argv) 
@@ -49,6 +49,9 @@ int main(int argc, char **argv)
 
 	/* Init GTK+ */
 	gtk_init(&argc, &argv);
+
+	/* Init logic*/
+	initialize();
 
 	/* Create new GtkBuilder object */
 	builder = gtk_builder_new_from_file("glade/threadville.glade");
@@ -96,9 +99,11 @@ int main(int argc, char **argv)
 
 	/* Show window. All other widgets are automatically shown by GtkBuilder */
 	gtk_widget_show(window);
+
 	create_semaphores(&direction);
 	tick_cb = g_timeout_add(1000 / FPS / 2, (GSourceFunc) on_tick, GINT_TO_POINTER(size)); 
 	
+
 	/* Start main loop */
 	gtk_main();
 
