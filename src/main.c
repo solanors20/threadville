@@ -265,11 +265,11 @@ void on_check_gray_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widget
 {
 	if (gtk_toggle_button_get_active(togglebutton))
 	{
-		g_print("gray_bus is Checked\n");
+		enable_gray_bus();
 	}
 	else
 	{
-		g_print("gray_bus is Unchecked\n");
+		disable_bus(busGrayThreadCounter);
 	}
 }
 
