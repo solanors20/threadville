@@ -1,7 +1,7 @@
 
 #include <unistd.h>
 #include <pthread.h>
-
+#include "graph.h"
 #ifndef TV_ADT
 
 
@@ -28,16 +28,29 @@ void create_semaphores(int *direction){
     }
 }
 
-static void draw_LarrySemaphore(int direction, cairo_t *cr){
-    if(direction)
+void draw_semaphore_by_node(NODE *node, cairo_t *cr){
+    if(node->isFree)
         cairo_set_source_rgb (cr, 0.0, 1.0, 0.0);
     else
         cairo_set_source_rgb (cr, 1.0, 0.0, 0.0);
-        
-
-    cairo_rectangle(cr, 10, 5,TILESIZE,TILESIZE);
+    cairo_rectangle(cr, node->x-10, node->y,TILESIZE,TILESIZE);
     cairo_fill (cr);
 }
+
+static void draw_semaphores(cairo_t *cr){
+    draw_semaphore_by_node(larry->northLeftBridge, cr);
+    draw_semaphore_by_node(larry->southRightBridge, cr);
+    draw_semaphore_by_node(joe->northLeftBridge, cr);
+    draw_semaphore_by_node(joe->southRightBridge, cr);
+    draw_semaphore_by_node(curly->northLeftBridge, cr);
+    draw_semaphore_by_node(curly->southRightBridge, cr);
+    draw_semaphore_by_node(shemp->northLeftBridge, cr);
+    draw_semaphore_by_node(shemp->southRightBridge, cr);
+    draw_semaphore_by_node(moe->northLeftBridge, cr);
+    draw_semaphore_by_node(moe->southRightBridge, cr);
+}
+
+
 
 
 
