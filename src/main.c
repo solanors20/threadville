@@ -178,7 +178,7 @@ void on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	draw_background(cr);
 
-	draw_LarrySemaphore(direction, cr);
+	draw_semaphores(cr);
 
 	int i;
 	for (i = 0; i < threadCounter; i++)
