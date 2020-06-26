@@ -19,6 +19,7 @@ typedef struct NODE
     int y;
     struct NODE *nextNode1;
     struct NODE *nextNode2;
+    struct NODE *nextNode3;
 } NODE;
 
 NODE* createNode(int id, char *name, int capacity)
