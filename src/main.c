@@ -1,9 +1,9 @@
 #include <gtk/gtk.h>
 #include <unistd.h>
 #include <unistd.h>
-
 #include "lib/threadville_globals.h"
 #include "lib/map.h"
+#include "lib/semaphore.h"
 #include "lib/initialize.h"
 #include "lib/bus_logic.h"
 
@@ -38,7 +38,11 @@ static GtkWidget *draw;
 
 static gboolean on_tick(gpointer user_data);
 
-int main(int argc, char **argv)
+int direction = 0;
+
+
+
+int main(int argc, char **argv) 
 {
 	GtkBuilder *builder;
 	GtkWidget *window;
@@ -98,7 +102,9 @@ int main(int argc, char **argv)
 	/* Show window. All other widgets are automatically shown by GtkBuilder */
 	gtk_widget_show(window);
 
-	tick_cb = g_timeout_add(1000 / FPS / 2, (GSourceFunc)on_tick, GINT_TO_POINTER(size));
+	create_semaphores(&direction);
+	tick_cb = g_timeout_add(1000 / FPS / 2, (GSourceFunc) on_tick, GINT_TO_POINTER(size)); 
+	
 
 	/* Start main loop */
 	gtk_main();
@@ -174,6 +180,9 @@ static void draw_car(cairo_t *cr, VEHICLE *vehicule)
 void on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	draw_background(cr);
+
+	draw_LarrySemaphore(direction, cr);
+
 
 	int i;
 	for (i = 0; i < threadCounter; i++)
