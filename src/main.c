@@ -8,6 +8,8 @@
 #include "lib/bus_logic.h"
 #include "lib/constants.h"
 
+#define FPS 60
+
 typedef struct
 {
 	//checks
