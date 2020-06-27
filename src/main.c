@@ -331,7 +331,7 @@ void on_btn_create_random_car_clicked(GtkButton *button, AppWidgets *widgets)
 
 void on_btn_create_random_ambulance_clicked(GtkButton *button, AppWidgets *widgets)
 {
-	g_print("Random ambulance clicked\n");
+	add_ambulance();
 }
 
 void on_btn_create_car_clicked(GtkButton *button, AppWidgets *widgets)

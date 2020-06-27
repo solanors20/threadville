@@ -216,7 +216,150 @@ void *update_car_position(void *car)
     usleep(tempCar->speed * 10000);
   }
 }
+void *update_ambulance_position(void *car)
+{
+    VEHICLE *tempCar = (VEHICLE *)car;
+    int stopIndex = 0;
 
+    generateRoute(tempCar, tempCar->stops[stopIndex], tempCar->stops[stopIndex + 1]);
+
+    DESTINATION *currentDestination = tempCar->route->destination;
+    currentDestination = currentDestination->next;
+    tempCar->nextDestination = tempCar->stops[stopIndex + 1]->name;
+
+    bool canMove = true;
+    while (tempCar->run)
+    {
+
+        if (stopIndex < tempCar->stopsCounter - 1)
+        {
+            int i = 0;
+            if((!curly->northLeftBridge->isFree
+                && tempCar->x < 390 && tempCar->x > 380
+                && tempCar->y == 300) ||
+               (!curly->southRightBridge->isFree
+                && tempCar->x > 330 && tempCar->x < 340
+                && tempCar->y == 360) ||
+               (!shemp->southRightBridge->isFree
+                && tempCar->x > 650 && tempCar->x < 660
+                && tempCar->y == 360) ||
+               (!shemp->northLeftBridge->isFree
+                && tempCar->x < 710 && tempCar->x > 690
+                && tempCar->y == 300)){
+                tempCar->dx = 0;
+                tempCar->dy = 0;
+            }
+            else if (tempCar->x < currentDestination->node.x && tempCar->y <= currentDestination->node.y)
+            {
+                tempCar->dx = 1;
+                tempCar->dy = 0;
+            }
+            else if (tempCar->y < currentDestination->node.y)
+            {
+                tempCar->dx = 0;
+                tempCar->dy = 1;
+            }
+            else if (tempCar->x > currentDestination->node.x)
+            {
+                tempCar->dx = -1;
+                tempCar->dy = 0;
+            }
+            else if (tempCar->y > currentDestination->node.y)
+            {
+                tempCar->dx = 0;
+                tempCar->dy = -1;
+            }
+            else
+            {
+                if ((currentDestination = currentDestination->next) != NULL)
+                {
+                    ;
+                }
+                else
+                {
+                    ++stopIndex;
+                    if (stopIndex < tempCar->stopsCounter - 1)
+                    {
+                        generateRoute(tempCar, tempCar->stops[stopIndex % tempCar->stopsCounter], tempCar->stops[(stopIndex + 1) % tempCar->stopsCounter]);
+                        currentDestination = tempCar->route->destination;
+                        currentDestination = currentDestination->next;
+
+                        usleep(tempCar->delay * 3000000);
+                        tempCar->nextDestination = tempCar->stops[stopIndex + 1]->name;
+                    }
+                    else
+                    {
+
+                        if (tempCar->type == 1)
+                        {
+                            tempCar->run = false;
+                            tempCar->x = 0;
+                            tempCar->x = 0;
+                            usleep(tempCar->delay * 3000000);
+                            break;
+                        }
+                        else
+                        {
+                            generateRoute(tempCar, tempCar->stops[stopIndex], tempCar->stops[0]);
+                            currentDestination = tempCar->route->destination;
+                            currentDestination = currentDestination->next;
+
+                            usleep(tempCar->delay * 3000000);
+                            tempCar->nextDestination = tempCar->stops[0]->name;
+                            stopIndex = -1;
+                        }
+                    }
+                }
+            }
+
+            for (i; i < threadCounter; i++)
+            {
+
+                if (!are_two_vehicles_near(tempCar, vehicules[i]))
+                {
+                    canMove = true;
+                }
+                else
+                {
+                    canMove = false;
+                    break;
+                }
+            }
+
+            if (canMove)
+            {
+                if (currentDestination->node.isSpecial && currentDestination->node.isFree == false)
+                {
+                }
+                else
+                {
+                    tempCar->x += tempCar->dx;
+                    tempCar->y += tempCar->dy;
+                }
+            }
+            else
+            {
+
+                usleep(9000);
+            }
+        }
+        else
+        {
+            if (tempCar->type == 1)
+            {
+                tempCar->run = false;
+                tempCar->x = 0;
+                tempCar->y = 0;
+            }
+            else
+            {
+                stopIndex = 0;
+            }
+        }
+
+        usleep(tempCar->speed * 9000);
+    }
+}
 void add_vehicule()
 {
 
@@ -244,6 +387,35 @@ void add_vehicule()
     exit(4);
   }
   threadCounter++;
+}
+
+void add_ambulance()
+{
+
+    int rc;
+    vehicules[threadCounter] = createAmbulance("a");
+
+    srand(time(NULL));
+    vehicules[threadCounter]->stopsCounter = (rand() % 4 + 1) + 2;
+    vehicules[threadCounter]->stops = (NODE **)calloc(vehicules[threadCounter]->stopsCounter, sizeof(NODE *));
+    vehicules[threadCounter]->stops[0] = &linkedList[72];
+    int i;
+    for (i = 1; i < vehicules[threadCounter]->stopsCounter - 1; i++)
+    {
+        int value = rand() % 170 + 2;
+        vehicules[threadCounter]->stops[i] = &linkedList[value];
+    }
+    vehicules[threadCounter]->stops[vehicules[threadCounter]->stopsCounter - 1] = &linkedList[105];
+    vehicules[threadCounter]->x = vehicules[threadCounter]->stops[0]->x;
+    vehicules[threadCounter]->y = vehicules[threadCounter]->stops[0]->y;
+
+    rc = pthread_create(&threads[threadCounter], NULL, update_ambulance_position, (void *)vehicules[threadCounter]);
+    if (rc)
+    {
+        printf("error, return frim pthread creation\n");
+        exit(4);
+    }
+    threadCounter++;
 }
 
 void add_bus(char *id, int stopsCounter, int stops[], int speed, int color)
