@@ -63,5 +63,8 @@ dkms.conf
 threadville
 target
 
+# tgz files
+Araya-Argueta-Hernandez-Solano.tgz
+
 # Glade
 *.glade~
