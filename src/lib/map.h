@@ -69,17 +69,17 @@ static void draw_background (cairo_t * cr)
         {
             if(map[x][y]==1)
             {
-                cairo_set_source_rgb (cr, 0.5, 0.5, 0.5);
+                cairo_set_source_rgb (cr, 0.37, 0.37, 0.37);
                 cairo_rectangle(cr, y*TILE_SIZE, x*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 cairo_fill (cr);
             } else if(map[x][y]==2)
             {
-                cairo_set_source_rgb (cr, 1.0, 1.0, 0.0);
+                cairo_set_source_rgb (cr, 0,0 ,0.90);
                 cairo_rectangle(cr, y*TILE_SIZE, x*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 cairo_fill (cr);
             } else if(map[x][y]==3)
             {
-                cairo_set_source_rgb (cr, 0.3,0.8,0.0);
+                cairo_set_source_rgb (cr, 0.01,0.49,0.0);
                 cairo_rectangle(cr, y*TILE_SIZE, x*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 cairo_fill (cr);
             } else if(map[x][y]==4)
@@ -96,7 +96,7 @@ static void draw_background (cairo_t * cr)
                 s++;
             } else if(map[x][y]==5 || map[x][y]==6) 
             {
-                cairo_set_source_rgb (cr, 0.5, 0.5, 0.5);
+                cairo_set_source_rgb (cr, 0.37, 0.37, 0.37);
                 cairo_rectangle(cr, y*TILE_SIZE, x*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 cairo_fill (cr);
             }
@@ -107,6 +107,7 @@ static void draw_background (cairo_t * cr)
     x_limit = 6;
     y_limit = 2;
 
+    cairo_set_source_rgb (cr, 1, 1, 1);
     cairo_set_font_size(cr, 54);
     cairo_text_extents_t extents;
     char *utf8;
