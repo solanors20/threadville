@@ -26,7 +26,6 @@ bool are_two_vehicles_near(VEHICLE *car1, VEHICLE *car2)
   }
 
   return false;
-
 }
 
 bool is_vehicle_in_red_light(VEHICLE *car1, NODE *semaphore)
@@ -42,7 +41,6 @@ bool is_vehicle_in_red_light(VEHICLE *car1, NODE *semaphore)
   }
 
   return false;
-
 }
 
 void *update_car_position(void *car)
@@ -63,6 +61,7 @@ void *update_car_position(void *car)
     if (stopIndex < tempCar->stopsCounter - 1)
     {
       int i = 0;
+
       if((larry->northLeftBridge->isFree
       && tempCar->x < 220 && tempCar->x > 218
       && tempCar->y == 300) ||
@@ -105,7 +104,7 @@ void *update_car_position(void *car)
       && tempCar->y == 360)){
         tempCar->dx = 0;
         tempCar->dy = 0;
-      } 
+      }
       else if (tempCar->x < currentDestination->node.x && tempCar->y <= currentDestination->node.y)
       {
         tempCar->dx = 1;
@@ -181,15 +180,12 @@ void *update_car_position(void *car)
           canMove = false;
           break;
         }
-      } 
-      
-      
-      
+      }
+
       if (canMove)
       {
         if (currentDestination->node.isSpecial && currentDestination->node.isFree == false)
         {
-         
         }
         else
         {
@@ -219,6 +215,35 @@ void *update_car_position(void *car)
 
     usleep(tempCar->speed * 10000);
   }
+}
+
+void add_vehicule()
+{
+
+  int rc;
+  vehicules[threadCounter] = createCar("v", 0);
+
+  srand(time(NULL));
+  vehicules[threadCounter]->stopsCounter = (rand() % 4 + 1) + 2;
+  vehicules[threadCounter]->stops = (NODE **)calloc(vehicules[threadCounter]->stopsCounter, sizeof(NODE *));
+  vehicules[threadCounter]->stops[0] = &linkedList[72];
+  int i;
+  for (i = 1; i < vehicules[threadCounter]->stopsCounter - 1; i++)
+  {
+    int value = rand() % 170 + 2;
+    vehicules[threadCounter]->stops[i] = &linkedList[value];
+  }
+  vehicules[threadCounter]->stops[vehicules[threadCounter]->stopsCounter - 1] = &linkedList[105];
+  vehicules[threadCounter]->x = vehicules[threadCounter]->stops[0]->x;
+  vehicules[threadCounter]->y = vehicules[threadCounter]->stops[0]->y;
+
+  rc = pthread_create(&threads[threadCounter], NULL, update_car_position, (void *)vehicules[threadCounter]);
+  if (rc)
+  {
+    printf("error, return frim pthread creation\n");
+    exit(4);
+  }
+  threadCounter++;
 }
 
 void add_bus(char *id, int stopsCounter, int stops[], int speed, int color)
