@@ -16,7 +16,7 @@ void enable_red_bus()
   int stopsCounter = 12;
   char *name = "RED-BUS";
   busRedThreadCounter = threadCounter;
-  add_bus(name, stopsCounter, stops, 5, RED);
+  add_bus(name, stopsCounter, stops, 1, RED);
 }
 
 void enable_green_bus()
@@ -25,7 +25,7 @@ void enable_green_bus()
   int totalStops = 6;
   char *name = "GREEN-BUS";
   busGreenThreadCounter = threadCounter;
-  add_bus(name, totalStops, stops, 1, GREEN);
+  add_bus(name, totalStops, stops, 3, GREEN);
 }
 
 void enable_blue_bus()
@@ -34,7 +34,7 @@ void enable_blue_bus()
   int totalStops = 6;
   char *name = "BLUE-BUS";
   busBlueThreadCounter = threadCounter;
-  add_bus(name, totalStops, stops, 1, BLUE);
+  add_bus(name, totalStops, stops, 2, BLUE);
 }
 
 void enable_white_bus()
@@ -43,7 +43,7 @@ void enable_white_bus()
   int totalStops = 6;
   char *name = "WHITE-BUS";
   busWhiteThreadCounter = threadCounter;
-  add_bus(name, totalStops, stops, 4, WHITE);
+  add_bus(name, totalStops, stops, 5, WHITE);
 }
 
 void enable_gray_bus()

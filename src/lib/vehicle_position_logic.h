@@ -63,10 +63,10 @@ void *update_car_position(void *car)
       int i = 0;
 
       if((larry->northLeftBridge->isFree
-      && tempCar->x < 220 && tempCar->x > 218
+      && tempCar->x == 180
       && tempCar->y > 298 && tempCar->y < 300) ||
       (larry->southRightBridge->isFree
-      && tempCar->x > 179 && tempCar->x < 181
+      && tempCar->x == 200
       && tempCar->y < 360 && tempCar->y > 358)){
         pthread_mutex_lock(&lock_police);
         car_counter_police--;
@@ -102,7 +102,13 @@ void *update_car_position(void *car)
       && tempCar->y < 360 && tempCar->y > 358) ||
       (!joe->northLeftBridge->isFree
       && tempCar->x == 830
-      && tempCar->y > 298 && tempCar->y < 300)){
+      && tempCar->y > 298 && tempCar->y < 300) ||
+      (!larry->northLeftBridge->isFree
+      && tempCar->x == 180
+      && tempCar->y > 298 && tempCar->y < 300) ||
+      (!larry->southRightBridge->isFree
+      && tempCar->x == 200
+      && tempCar->y < 360 && tempCar->y > 358)){
         tempCar->dx = 0;
         tempCar->dy = 0;
       }
