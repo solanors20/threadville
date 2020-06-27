@@ -26,4 +26,5 @@ clean:
 	rm -f $(OBJECTS)  
 	rm -rf target/
 
-
+compress:
+	git archive -o Araya-Argueta-Hernandez-Solano.tgz HEAD
