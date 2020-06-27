@@ -367,7 +367,7 @@ void add_ambulance()
     vehicules[threadCounter] = createAmbulance("a");
 
     srand(time(NULL));
-    vehicules[threadCounter]->stopsCounter = (rand() % 4 + 1) + 2;
+    vehicules[threadCounter]->stopsCounter = 3;
     vehicules[threadCounter]->stops = (NODE **)calloc(vehicules[threadCounter]->stopsCounter, sizeof(NODE *));
     vehicules[threadCounter]->stops[0] = &linkedList[72];
     int i;
