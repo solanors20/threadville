@@ -22,6 +22,47 @@ void* semaphoreWithConstantTime(void *bridge_ptr){
 	}
 }
 
+void* semaphoreWithPolices(void *bridge_ptr){
+
+	BRIDGE *bridge = (BRIDGE *)bridge_ptr;
+	int random;
+
+	while(true){
+        if(car_counter_police < 1){
+            bridge->northLeftBridge->isFree = !bridge->northLeftBridge->isFree;
+            bridge->southRightBridge->isFree = !bridge->southRightBridge->isFree;
+            bridge->northRightBridge->isFree = !bridge->northRightBridge->isFree;
+            bridge->southLeftBridge->isFree = !bridge->southLeftBridge->isFree;
+            pthread_mutex_lock(&lock_police);
+            car_counter_police = max_cars;
+            pthread_mutex_unlock(&lock_police);
+        }
+        
+	}
+}
+
+void semaphorePoliceThreadInit(BRIDGE *bridge){
+	bridge->northLeftBridge->isSpecial=true;
+	bridge->northLeftBridge->isFree = true;
+
+    bridge->northRightBridge->isSpecial=true;
+	bridge->northRightBridge->isFree = false;
+
+	bridge->southRightBridge->isSpecial = true;
+	bridge->southRightBridge->isFree = false;
+
+    bridge->southLeftBridge->isSpecial = true;
+	bridge->southLeftBridge->isFree = true;
+
+	int rc;
+	pthread_t northSemaphore_thread;
+	rc = pthread_create(&northSemaphore_thread, NULL, &semaphoreWithPolices, bridge);
+	if (rc)
+    {
+            printf("error, return frim pthread creation\n");
+            exit(4);
+    }
+}
 
 void semaphoreThreadInit(BRIDGE *bridge){
 	bridge->northLeftBridge->isSpecial=true;
@@ -48,7 +89,9 @@ void semaphoreThreadInit(BRIDGE *bridge){
 
 void create_semaphores(){
  	semaphoreThreadInit(curly);   
-    semaphoreThreadInit(shemp);  
+    semaphoreThreadInit(shemp); 
+    semaphorePoliceThreadInit(larry);
+    semaphorePoliceThreadInit(joe); 
 }
 
 
@@ -72,9 +115,9 @@ static void draw_semaphores(cairo_t *cr){
     draw_semaphore_by_node(shemp->southRightBridge, cr);
     draw_semaphore_by_node(moe->northLeftBridge, cr);
     draw_semaphore_by_node(moe->southRightBridge, cr);
-    /*cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
-    cairo_rectangle(cr, 660, 360, 30, 40);
-    cairo_fill (cr);*/
+    cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
+    cairo_rectangle(cr, 860, 301, 30, 40);
+    cairo_fill (cr);
 }
 
 
