@@ -14,6 +14,10 @@ int busGrayThreadCounter=0;
 int busPinkThreadCounter=0;
 int busLightBlueThreadCounter=0;
 
+#define max_cars 1;
+int car_counter_police = max_cars;
+pthread_mutex_t lock_police;
+
 #define WIDTH 1080
 #define HEIGTH 720
 
