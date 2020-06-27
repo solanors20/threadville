@@ -2,22 +2,26 @@
 # La carpeta 'target/' va a servir como punto en donde se van a dejar los archivos resultantes del proceso
 # de compilacion
 
+COMPRESS_FILENAME=Araya-Argueta-Hernandez-Solano.tgz
+
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
+
 EXECUTABLE=threadville
+
 ODIR=target
-#CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG -fPIC $(OPTFLAGS)
-LDFLAGS='-export-dynamic' 
+CFLAGS= `pkg-config --cflags gtk+-3.0`
+LDFLAGS= -Wl,--export-dynamic `pkg-config --libs gtk+-3.0` -pthread
 
 
 all: clean $(EXECUTABLE)
 
 build:
-	$(CC) -c `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` $(SOURCES) 
+	$(CC) -c $(CFLAGS) $(SOURCES) $(LDFLAGS)
 	mv *.o src/ 
 
 $(EXECUTABLE): $(ODIR) build
-	$(CC) $(OBJECTS) -o $(ODIR)/$(EXECUTABLE) -Wl,--export-dynamic `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` -pthread 
+	$(CC) $(OBJECTS) $(CFLAGS) -o $(ODIR)/$(EXECUTABLE) $(LDFLAGS)
 
 $(ODIR):
 	mkdir target/
@@ -25,6 +29,7 @@ $(ODIR):
 clean:
 	rm -f $(OBJECTS)  
 	rm -rf target/
+	rm -f $(COMPRESS_FILENAME)
 
 compress:
-	git archive -o Araya-Argueta-Hernandez-Solano.tgz HEAD
+	git archive -o $(COMPRESS_FILENAME) HEAD
