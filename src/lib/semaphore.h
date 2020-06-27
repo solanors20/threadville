@@ -115,9 +115,9 @@ static void draw_semaphores(cairo_t *cr){
     draw_semaphore_by_node(shemp->southRightBridge, cr);
     draw_semaphore_by_node(moe->northLeftBridge, cr);
     draw_semaphore_by_node(moe->southRightBridge, cr);
-    cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
+    /*cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
     cairo_rectangle(cr, 860, 301, 30, 40);
-    cairo_fill (cr);
+    cairo_fill (cr);*/
 }
 
 
