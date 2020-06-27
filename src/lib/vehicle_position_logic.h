@@ -184,6 +184,33 @@ void *update_car_position(void *car)
   }
 }
 
+void add_vehicule() {
+    
+    int rc;
+    vehicules[threadCounter]= createCar("v", 0);
+    
+    srand(time(NULL));
+    vehicules[threadCounter]->stopsCounter=(rand()%4+1)+2;
+    vehicules[threadCounter]->stops=(NODE**) calloc(vehicules[threadCounter]->stopsCounter, sizeof(NODE*));
+    vehicules[threadCounter]->stops[0]=&linkedList[72]; 
+    int i;
+    for(i=1; i<vehicules[threadCounter]->stopsCounter-1; i++){
+        int value= rand()%170+2;
+        vehicules[threadCounter]->stops[i]=&linkedList[value];                       
+    } // for
+    vehicules[threadCounter]->stops[vehicules[threadCounter]->stopsCounter-1]=&linkedList[105];
+    vehicules[threadCounter]->x=vehicules[threadCounter]->stops[0]->x;
+    vehicules[threadCounter]->y=vehicules[threadCounter]->stops[0]->y; //0;
+
+    rc = pthread_create(&threads[threadCounter], NULL, update_car_position, (void *)vehicules[threadCounter]);
+    if (rc)
+    {
+            printf("error, return frim pthread creation\n");
+            exit(4);
+    }
+    threadCounter++;
+}
+
 void add_bus(char *id, int stopsCounter, int stops[], int speed, int color)
 {
   char *_id = id;

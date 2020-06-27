@@ -326,7 +326,7 @@ void on_check_orange_bus_toggled(GtkToggleButton *togglebutton, AppWidgets *widg
 
 void on_btn_create_random_car_clicked(GtkButton *button, AppWidgets *widgets)
 {
-	g_print("Random car clicked\n");
+	add_vehicule();
 }
 
 void on_btn_create_random_ambulance_clicked(GtkButton *button, AppWidgets *widgets)
