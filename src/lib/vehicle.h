@@ -91,7 +91,7 @@ VEHICLE* createAmbulance(char *id)
     ambulance->y = 0;
     ambulance->dx = 1;
     ambulance->dy = 0;
-    ambulance->speed = 10; // TO-DO set correct speed
+    ambulance->speed = 2; // TO-DO set correct speed
     ambulance->color = 10; // TO-DO set correct color
     ambulance->width = TILE_SIZE;
     ambulance->height = TILE_SIZE;
