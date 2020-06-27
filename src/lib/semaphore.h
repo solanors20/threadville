@@ -14,9 +14,11 @@ void* semaphoreWithConstantTime(void *bridge_ptr){
 	int random;
 
 	while(true){
-		sleep(5);
+		sleep(3);
 		bridge->northLeftBridge->isFree = !bridge->northLeftBridge->isFree;
         bridge->southRightBridge->isFree = !bridge->southRightBridge->isFree;
+        bridge->northRightBridge->isFree = !bridge->northRightBridge->isFree;
+        bridge->southLeftBridge->isFree = !bridge->southLeftBridge->isFree;
 	}
 }
 
@@ -25,8 +27,14 @@ void semaphoreThreadInit(BRIDGE *bridge){
 	bridge->northLeftBridge->isSpecial=true;
 	bridge->northLeftBridge->isFree = true;
 
+    bridge->northRightBridge->isSpecial=true;
+	bridge->northRightBridge->isFree = false;
+
 	bridge->southRightBridge->isSpecial = true;
 	bridge->southRightBridge->isFree = false;
+
+    bridge->southLeftBridge->isSpecial = true;
+	bridge->southLeftBridge->isFree = true;
 
 	int rc;
 	pthread_t northSemaphore_thread;
@@ -65,7 +73,7 @@ static void draw_semaphores(cairo_t *cr){
     draw_semaphore_by_node(moe->northLeftBridge, cr);
     draw_semaphore_by_node(moe->southRightBridge, cr);
     /*cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
-    cairo_rectangle(cr, 340, 300, 30, 40);
+    cairo_rectangle(cr, 660, 360, 30, 40);
     cairo_fill (cr);*/
 }
 

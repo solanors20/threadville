@@ -61,8 +61,18 @@ void *update_car_position(void *car)
     if (stopIndex < tempCar->stopsCounter - 1)
     {
       int i = 0;
-      if (!curly->northLeftBridge->isFree && tempCar->x < 390 && tempCar->y == 300)
-      {
+      if((!curly->northLeftBridge->isFree
+      && tempCar->x < 390 && tempCar->x > 380
+      && tempCar->y == 300) ||
+      (!curly->southRightBridge->isFree
+      && tempCar->x > 330 && tempCar->x < 340
+      && tempCar->y == 360) ||
+      (!shemp->southRightBridge->isFree
+      && tempCar->x > 650 && tempCar->x < 660
+      && tempCar->y == 360) ||
+        (!shemp->northLeftBridge->isFree
+      && tempCar->x < 710 && tempCar->x > 690
+      && tempCar->y == 300)){
         tempCar->dx = 0;
         tempCar->dy = 0;
       }
