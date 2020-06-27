@@ -64,44 +64,45 @@ void *update_car_position(void *car)
 
       if((larry->northLeftBridge->isFree
       && tempCar->x < 220 && tempCar->x > 218
-      && tempCar->y == 300) ||
+      && tempCar->y > 298 && tempCar->y < 300) ||
       (larry->southRightBridge->isFree
       && tempCar->x > 179 && tempCar->x < 181
-      && tempCar->y == 360)){
+      && tempCar->y < 360 && tempCar->y > 358)){
         pthread_mutex_lock(&lock_police);
         car_counter_police--;
         pthread_mutex_unlock(&lock_police);
       }
 
       if((joe->southRightBridge->isFree
-      && tempCar->x > 819 && tempCar->x < 821
-      && tempCar->y == 360) ||
+      && tempCar->x == 840
+      && tempCar->y < 360 && tempCar->y > 358) ||
       (joe->northLeftBridge->isFree
-      && tempCar->x < 860 && tempCar->x > 858
-      && tempCar->y == 300)){
+      && tempCar->x == 830
+      && tempCar->y > 298 && tempCar->y < 300)){
         pthread_mutex_lock(&lock_police);
+        printf("habia %i %i", tempCar->x , tempCar->y);
         car_counter_police--;
         pthread_mutex_unlock(&lock_police);
       }
 
       if((!curly->northLeftBridge->isFree
-      && tempCar->x < 390 && tempCar->x > 380
-      && tempCar->y == 300) ||
+      && tempCar->x == 340 
+      && tempCar->y > 298 && tempCar->y < 300) ||
       (!curly->southRightBridge->isFree
-      && tempCar->x > 330 && tempCar->x < 340
-      && tempCar->y == 360) ||
+      && tempCar->x == 360
+      && tempCar->y < 360 && tempCar->y > 358) ||
       (!shemp->southRightBridge->isFree
-      && tempCar->x > 650 && tempCar->x < 660
-      && tempCar->y == 360) ||
+      && tempCar->x == 680 
+      && tempCar->y < 360 && tempCar->y > 358) ||
         (!shemp->northLeftBridge->isFree
-      && tempCar->x < 710 && tempCar->x > 690
-      && tempCar->y == 300) ||
-      (!larry->northLeftBridge->isFree
-      && tempCar->x < 221 && tempCar->x > 219
-      && tempCar->y == 300) ||
-      (!larry->southRightBridge->isFree
-      && tempCar->x > 176 && tempCar->x < 178
-      && tempCar->y == 360)){
+      && tempCar->x == 660 
+      && tempCar->y > 298 && tempCar->y < 300) ||
+      (!joe->southRightBridge->isFree
+      && tempCar->x == 840
+      && tempCar->y < 360 && tempCar->y > 358) ||
+      (!joe->northLeftBridge->isFree
+      && tempCar->x == 830
+      && tempCar->y > 298 && tempCar->y < 300)){
         tempCar->dx = 0;
         tempCar->dy = 0;
       }
